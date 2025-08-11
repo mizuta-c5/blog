@@ -1,0 +1,11 @@
+name = "blog"
+main = "src/index.ts"
+compatibility_date = "2025-08-11"
+
+[assets]
+directory = "public" 
+
+[[d1_databases]]
+binding = "DB"
+database_name = "blog"
+database_id = "81a48e55-aba0-4ce2-8c7c-c7503c7f08d1"
