@@ -1,6 +1,7 @@
 name = "blog"
-main = "src/index.ts"
+main = "src/app.ts"
 compatibility_date = "2025-08-11"
+pages_build_output_dir = "public"
 
 [assets]
 directory = "public" 
