@@ -1,13 +1,26 @@
 import { D1Database } from '@cloudflare/workers-types'
 import { Hono } from 'hono'
 import { html } from 'hono/html'
+import { getCookie, setCookie, deleteCookie } from 'hono/cookie'
+import { sign, verify } from 'hono/jwt'
+import { secureHeaders } from 'hono/secure-headers' 
+import { StringBuffer } from 'hono/utils/html'
 
 type Bindings = {
   DB: D1Database
-  ADMIN_KEY: string
+  ADMIN_USER: string
+  ADMIN_PASS: string
+  SESSION_SECRET: string
 }
 
-const app = new Hono<{ Bindings: Bindings }>()
+type Variables = {
+  user: {
+    name: string
+  }
+}
+
+const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
+app.use('*', secureHeaders())
 
 const layout = (title: string, body: string) =>
   html` <html lang="en">
@@ -55,7 +68,30 @@ const slugify = (s: string) =>
     .replace(/^-+|-+$/g, '')
     .replace(/^-+|-+$/g, '')
 
+// セッション関連Utils
+async function getUserFromCookie(c: any) {
+  const token = getCookie(c, 'session')
+  if (!token) return null
+  try {
+    const payload = verify(token, c.env.SESSION_SECRET)
+    return { name: (payload as any).sub as string }
+  } catch (e) {
+    c.error(e)
+    return null
+  }
+}
+
+async function requireAuth(c: any, next: any) {
+  const user = await getUserFromCookie(c)
+  if (!user) {
+    return c.redirect('/login', 302)
+  }
+  c.set('user', user)
+  await next()
+}
+
 app.get('/', async (c) => {
+  const user = await getUserFromCookie(c)
   const { results } = await c.env.DB.prepare(
     'SELECT slug, title, created_at FROM posts ORDER BY created_at DESC',
   ).all()
@@ -68,52 +104,113 @@ app.get('/', async (c) => {
         </div>
       </div>`,
   )
+
+  const nav = user ? html`
+      <nav>
+        <a href="/">Home</a>
+        <a href="/new">New Post</a>
+        <a href="/logout">Logout</a>
+      </nav>
+    ` : html`<nav>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+      </nav>`
+
   return c.html(
     layout(
       'Blog',
-      await html`<h1>Blog</h1>
-        <p><a href="/new">New Post</a></p>
+      await html`${nav}<h1>Blog</h1>
         ${list.length > 0 ? list : html`<p>No posts yet</p>`}`,
     ),
   )
 })
 
 // 記事の詳細
-app.get('/p/:slug', async (c) => {
+app.get('/p/:slug', async (c) => { 
+  const user = await getUserFromCookie(c)
   const slug = c.req.param('slug')
   const row = await c.env.DB.prepare('SELECT title, content, created_at FROM posts WHERE slug = ?')
     .bind(slug)
     .first()
   if (!row) return c.notFound()
   const r = row as any
+
+  const controls = user
+  ? html`<p>
+      <a href="/edit/${r.slug}">Edit</a>
+      <form class="inline" method="post" action="/delete/${r.slug}" onsubmit="return confirm('Delete this post?')">
+        <button type="submit">Delete</button>
+      </form>
+    </p>`
+  : ''
+
+  const nav = user
+  ? html`<nav>
+      <a href="/">Home</a>
+      <a href="/new">New Post</a>
+      <a href="/logout">Logout</a>
+    </nav>`
+  : html`<nav>
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+    </nav>`
+
   return c.html(
     layout(
       r.title,
-      await html`<p><a href="/">Back</a></p>
+      await html`${nav}<p><a href="/">Back</a></p>
         <h1>${r.title}</h1>
         <div>
           <small>${new Date((r.created_at as number) * 1000).toLocaleString('ja-JP')}</small>
         </div>
         <article>${r.content}</article>
-        <form method="post" action="/p/${slug}/delete">
-          <input name="adminKey" type="password" placeholder="Admin Key" required />
-          <button type="submit">Delete</button>
+        ${controls}`,
+    ),
+  )
+})
+
+app.get('/login', async (c) => {
+  const user = await getUserFromCookie(c)
+  if (user) return c.redirect('/', 302)
+  return c.html(
+    layout(
+      'Login',
+      await html`<h1>Login</h1>
+        <form method="post" action="/login" autocomplete="off">
+          <input name="user" placeholder="User" required />
+          <input name="pass" type="password" placeholder="Password" required />
+          <button type="submit">Sign in</button>
         </form>`,
     ),
   )
 })
 
-app.post('/p/:slug/delete', async (c) => {
-  const slug = c.req.param('slug')
+app.post('/login', async (c) => {
   const form = await c.req.parseBody()
-  const adminKey = String(form['adminKey'] || '')
-  if (adminKey !== c.env.ADMIN_KEY) return c.text('Invalid admin key', 401)
-
-  await c.env.DB.prepare('DELETE FROM posts WHERE slug = ?').bind(slug).run()
+  const user = String(form['user'] || '')
+  const pass = String(form['pass'] || '')
+  if (user !== c.env.ADMIN_USER || pass !== c.env.ADMIN_PASS) {
+    return c.text('Invalid credentials', 401)
+  }
+  const token = await sign({ sub: user, iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7}, c.env.SESSION_SECRET)
+  setCookie(c, 'session', token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7,
+  })
   return c.redirect('/', 302)
 })
 
-app.get('/new', async (c) => {
+app.get('/logout', async (c) => {
+  deleteCookie(c, 'session', { path: '/' })
+  return c.redirect('/', 302)
+})
+
+
+// Private
+app.get('/new', requireAuth, async (c) => {
   return c.html(
     layout(
       'New Post',
@@ -130,12 +227,10 @@ app.get('/new', async (c) => {
   )
 })
 
-app.post('/new', async (c) => {
+app.post('/new', requireAuth, async (c) => {
   const form = await c.req.parseBody()
   const title = String(form['title'] || '').trim()
   const content = String(form['content'] || '').trim()
-  const adminKey = String(form['adminKey'] || '')
-  if (adminKey != c.env.ADMIN_KEY) return c.text('Invalid admin key', 401)
   if (!title || !content) return c.text('Missing title or content', 400)
 
   let slug = slugify(title)
@@ -151,7 +246,7 @@ app.post('/new', async (c) => {
   return c.redirect(`/p/${slug}`, 302)
 })
 
-app.get('/edit/:slug', async (c) => {
+app.get('/edit/:slug', requireAuth, async (c) => {
   const slug = c.req.param('slug')
   const row = await c.env.DB.prepare('SELECT title, content FROM posts WHERE slug = ?')
     .bind(slug)
@@ -166,12 +261,30 @@ app.get('/edit/:slug', async (c) => {
         <form method="post" action="/edit/${r.slug}">
           <input name="title" placeholder="Title" required value="${r.title}" />
           <textarea name="content" placeholder="Content" required>${r.content}</textarea>
-          <input name="adminKey" type="password" placeholder="Admin Key" required />
           <button type="submit">Update</button>
         </form>
       `,
     ),
   )
+})
+
+app.post('/edit/:slug', requireAuth, async (c) => {
+  const slug = c.req.param('slug')
+  const form = await c.req.parseBody()
+  const title = String(form['title'] || '').trim()
+  const content = String(form['content'] || '').trim()
+  if (!title || !content) return c.text('Missing title or content', 400)
+
+  await c.env.DB.prepare('UPDATE posts SET title = ?, content = ? WHERE slug = ?')
+    .bind(title, content, slug)
+    .run()
+  return c.redirect(`/p/${slug}`, 302)
+})
+
+app.post('/p/:slug/delete', requireAuth, async (c) => {
+  const slug = c.req.param('slug')
+  await c.env.DB.prepare('DELETE FROM posts WHERE slug = ?').bind(slug).run()
+  return c.redirect('/', 302)
 })
 
 export default app
