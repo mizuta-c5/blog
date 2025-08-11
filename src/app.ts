@@ -288,4 +288,16 @@ app.post('/p/:slug/delete', requireAuth, async (c) => {
   return c.redirect('/', 302)
 })
 
+
+// for debug
+// ★診断ルート（秘密は出さない・true/falseだけ）
+app.get('/__env', (c) => c.json({
+  hasDB: !!c.env.DB,
+  hasAdminUser: !!c.env.ADMIN_USER,
+  hasSessionSecret: !!c.env.SESSION_SECRET,
+}))
+
+// 任意：生存確認
+app.get('/__ping', (c) => c.text('pong'))
+
 export default app
