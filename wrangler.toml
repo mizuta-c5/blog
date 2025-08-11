@@ -1,5 +1,4 @@
 name = "blog"
-main = "src/app.ts"
 compatibility_date = "2025-08-11"
 pages_build_output_dir = "public"
 
