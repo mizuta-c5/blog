@@ -1,16 +1,17 @@
 import { D1Database } from '@cloudflare/workers-types'
 import { Hono } from 'hono'
 import { html } from 'hono/html'
+import { logger } from 'hono/logger'
 import { getCookie, setCookie, deleteCookie } from 'hono/cookie'
 import { sign, verify } from 'hono/jwt'
-import { secureHeaders } from 'hono/secure-headers' 
-import { StringBuffer } from 'hono/utils/html'
+import { secureHeaders } from 'hono/secure-headers'
 
 type Bindings = {
   DB: D1Database
   ADMIN_USER: string
   ADMIN_PASS: string
   SESSION_SECRET: string
+  NODE_ENV: string
 }
 
 type Variables = {
@@ -20,6 +21,7 @@ type Variables = {
 }
 
 const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
+app.use('*', logger())
 app.use('*', secureHeaders())
 
 const layout = (title: string, body: string) =>
@@ -66,14 +68,13 @@ const slugify = (s: string) =>
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
-    .replace(/^-+|-+$/g, '')
 
 // セッション関連Utils
 async function getUserFromCookie(c: any) {
   const token = getCookie(c, 'session')
   if (!token) return null
   try {
-    const payload = verify(token, c.env.SESSION_SECRET)
+    const payload = await verify(token, c.env.SESSION_SECRET)
     return { name: (payload as any).sub as string }
   } catch (e) {
     c.error(e)
@@ -138,7 +139,7 @@ app.get('/p/:slug', async (c) => {
   const controls = user
   ? html`<p>
       <a href="/edit/${r.slug}">Edit</a>
-      <form class="inline" method="post" action="/delete/${r.slug}" onsubmit="return confirm('Delete this post?')">
+      <form class="inline" method="post" action="/p/${r.slug}/delete" onsubmit="return confirm('Delete this post?')">
         <button type="submit">Delete</button>
       </form>
     </p>`
@@ -190,12 +191,12 @@ app.post('/login', async (c) => {
   const user = String(form['user'] || '')
   const pass = String(form['pass'] || '')
   if (user !== c.env.ADMIN_USER || pass !== c.env.ADMIN_PASS) {
-    return c.text('Invalid credentials', 401)
+    return c.redirect('/login', 302)
   }
   const token = await sign({ sub: user, iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7}, c.env.SESSION_SECRET)
   setCookie(c, 'session', token, {
     httpOnly: true,
-    secure: true,
+    secure: !(c.env.NODE_ENV === 'dev'),
     sameSite: 'Lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 7,
