@@ -1,4 +1,5 @@
 name = "blog"
+main = "src/app.ts"
 compatibility_date = "2025-08-11"
 assets = { directory = "public" }
 
