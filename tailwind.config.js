@@ -2,5 +2,8 @@
 module.exports = {
     content: ["./src/**/*.{ts,tsx}", "./**/*.html"],
     theme: { extend: {} },
-    plugins: [],
+    plugins: [
+        require('tailwindcss'),
+        require('autoprefixer'),
+    ],
 }

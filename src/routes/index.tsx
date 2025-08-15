@@ -13,9 +13,13 @@ home.get('/', async (c) => {
   ).all()
   const list = (results as any[]).map(
     (r) => html`
-      <div class="post">
-        <a href="/${r.slug}"><strong>${r.title}</strong></a>
-        <div><small>${new Date((r.created_at as number) * 1000).toLocaleString()}</small></div>
+      <div class="post p-4 bg-white rounded-lg shadow-md mb-4">
+        <a href="/post/${r.slug}" class="text-lg font-semibold text-gray-500 hover:text-gray-700"
+          >${r.title}</a
+        >
+        <div class="text-sm text-gray-500">
+          <small>${new Date((r.created_at as number) * 1000).toLocaleString()}</small>
+        </div>
       </div>
     `,
   )
@@ -24,7 +28,7 @@ home.get('/', async (c) => {
       'Blog',
       html`
         ${Nav(user as { name: string } | null)}
-        <h1>Blog</h1>
+        <h1 class="text-2xl font-bold mb-4">Blog</h1>
         ${list.length ? list : html`<p>No posts yet</p>`}
       `,
     ),
