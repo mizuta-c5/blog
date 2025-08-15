@@ -4,8 +4,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-    "build": "postcss public/styles.css -o public/output.css"
+    "build:css": "tailwindcss -i ./public/styles.css -o ./public/output.css -m",
+    "build": "pnpm run build:css",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250810.0",
