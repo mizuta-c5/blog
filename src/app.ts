@@ -14,9 +14,9 @@ app.use('*', secureHeaders())
 
 // ルーティング
 app.route('/', home)
-app.route('/auth', auth)
-app.route('/editor', editor)
-app.route('/post', post)
+app.route('/', auth)
+app.route('/', editor)
+app.route('/', post)
 
 // debug
 

@@ -28,8 +28,8 @@ auth.get('/login', async (c) => {
 
 auth.post('/login', async (c) => {
   const form = await c.req.parseBody()
-  const user = String(form['user'] || '')
-  const pass = String(form['pass'] || '')
+  const user = String(form['username'] || '')
+  const pass = String(form['password'] || '')
   if (user !== c.env.ADMIN_USER || pass !== c.env.ADMIN_PASS) {
     return c.redirect('/login', 302)
   }
@@ -52,5 +52,5 @@ auth.post('/login', async (c) => {
 
 auth.get('/logout', (c) => {
   cookies.deleteCookie(c, 'session', { path: '/' })
-  return c.redirect('login', 302)
+  return c.redirect('/login', 302)
 })
