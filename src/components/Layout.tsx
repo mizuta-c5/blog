@@ -8,7 +8,7 @@ export const Layout = (title: string, body: any, opts?: { wide?: boolean }) => {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>${title}</title>
         <link rel="icon" href="/favicon.ico?v=3" sizes="any" />
-        <link rel="stylesheet" href="/output.css" />
+        <link rel="stylesheet" href="/output.css?v=1" />
       </head>
       <body class="max-w-${opts?.wide ? '5xl' : 'xl'} ml-4 mr-4 my-10 px-4 font-sans">
         ${body}
