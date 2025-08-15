@@ -1,17 +1,22 @@
 name = "blog"
 main = "src/app.ts"
 compatibility_date = "2025-08-11"
-assets = { directory = "public" }
+
+# 静的アセット（/output.css など）はここから配信される
+[assets]
+directory = "public"
+# serve_directly = true  # 既定で true。静的はワーカーを経由せず高速配信
 
 [[d1_databases]]
-binding = "DB"
+binding = "DB"                            # c.env.DB と一致させる
 database_name = "blog"
 database_id = "81a48e55-aba0-4ce2-8c7c-c7503c7f08d1"
 
 [[routes]]
-pattern = "mizuta-c5.me"
-custom_domain = true
+pattern = "mizuta-c5.me/*"
+zone_name = "mizuta-c5.me"
 
 [[routes]]
-pattern = "www.mizuta-c5.me"
-custom_domain = true
+pattern = "www.mizuta-c5.me/*"
+zone_name = "mizuta-c5.me"
+

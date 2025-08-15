@@ -2,11 +2,13 @@
   "name": "blog",
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "build:css": "tailwindcss -i ./public/styles.css -o ./public/output.css -m",
     "build": "pnpm run build:css",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "build:css": "tailwindcss -i public/styles.css -o public/output.css -m",
+    "deploy": "pnpm run build:css && wrangler deploy",
+    "dev": "run-p dev:css dev:worker",
+    "dev:css": "tailwindcss -i public/styles.css -o public/output.css --watch",
+    "dev:worker": "wrangler dev"
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250810.0",
