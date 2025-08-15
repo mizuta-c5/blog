@@ -1,9 +1,9 @@
 import { D1Database } from '@cloudflare/workers-types'
 import { Hono } from 'hono'
+import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
 import { html } from 'hono/html'
-import { logger } from 'hono/logger'
-import { getCookie, setCookie, deleteCookie } from 'hono/cookie'
 import { sign, verify } from 'hono/jwt'
+import { logger } from 'hono/logger'
 import { secureHeaders } from 'hono/secure-headers'
 
 type Bindings = {
@@ -20,7 +20,7 @@ type Variables = {
   }
 }
 
-const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
+const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 app.use('*', logger())
 app.use('*', secureHeaders())
 
@@ -31,6 +31,7 @@ const layout = (title: string, body: string) =>
       <meta name="viewport" content="width=device-width,initial-scale=1" />
       <title>${title}</title>
       <link rel="icon" href="/favicon.ico?v=3" sizes="any" />
+      <link rel="stylesheet" href="/styles.css" />
       <style>
         body {
           max-width: 720px;
@@ -106,13 +107,15 @@ app.get('/', async (c) => {
       </div>`,
   )
 
-  const nav = user ? html`
-      <nav>
-        <a href="/">Home</a>
-        <a href="/new">New Post</a>
-        <a href="/logout">Logout</a>
-      </nav>
-    ` : html`<nav>
+  const nav = user
+    ? html`
+        <nav>
+          <a href="/">Home</a>
+          <a href="/new">New Post</a>
+          <a href="/logout">Logout</a>
+        </nav>
+      `
+    : html`<nav>
         <a href="/">Home</a>
         <a href="/login">Login</a>
       </nav>`
@@ -120,14 +123,15 @@ app.get('/', async (c) => {
   return c.html(
     layout(
       'Blog',
-      await html`${nav}<h1>Blog</h1>
+      await html`${nav}
+        <h1>Blog</h1>
         ${list.length > 0 ? list : html`<p>No posts yet</p>`}`,
     ),
   )
 })
 
 // 記事の詳細
-app.get('/p/:slug', async (c) => { 
+app.get('/p/:slug', async (c) => {
   const user = await getUserFromCookie(c)
   const slug = c.req.param('slug')
   const row = await c.env.DB.prepare('SELECT title, content, created_at FROM posts WHERE slug = ?')
@@ -137,29 +141,30 @@ app.get('/p/:slug', async (c) => {
   const r = row as any
 
   const controls = user
-  ? html`<p>
+    ? html`<p>
       <a href="/edit/${r.slug}">Edit</a>
       <form class="inline" method="post" action="/p/${r.slug}/delete" onsubmit="return confirm('Delete this post?')">
         <button type="submit">Delete</button>
       </form>
     </p>`
-  : ''
+    : ''
 
   const nav = user
-  ? html`<nav>
-      <a href="/">Home</a>
-      <a href="/new">New Post</a>
-      <a href="/logout">Logout</a>
-    </nav>`
-  : html`<nav>
-      <a href="/">Home</a>
-      <a href="/login">Login</a>
-    </nav>`
+    ? html`<nav>
+        <a href="/">Home</a>
+        <a href="/new">New Post</a>
+        <a href="/logout">Logout</a>
+      </nav>`
+    : html`<nav>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+      </nav>`
 
   return c.html(
     layout(
       r.title,
-      await html`${nav}<p><a href="/">Back</a></p>
+      await html`${nav}
+        <p><a href="/">Back</a></p>
         <h1>${r.title}</h1>
         <div>
           <small>${new Date((r.created_at as number) * 1000).toLocaleString('ja-JP')}</small>
@@ -193,7 +198,14 @@ app.post('/login', async (c) => {
   if (user !== c.env.ADMIN_USER || pass !== c.env.ADMIN_PASS) {
     return c.redirect('/login', 302)
   }
-  const token = await sign({ sub: user, iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7}, c.env.SESSION_SECRET)
+  const token = await sign(
+    {
+      sub: user,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+    },
+    c.env.SESSION_SECRET,
+  )
   setCookie(c, 'session', token, {
     httpOnly: true,
     secure: !(c.env.NODE_ENV === 'dev'),
@@ -208,7 +220,6 @@ app.get('/logout', async (c) => {
   deleteCookie(c, 'session', { path: '/' })
   return c.redirect('/', 302)
 })
-
 
 // Private
 app.get('/new', requireAuth, async (c) => {
@@ -288,14 +299,15 @@ app.post('/p/:slug/delete', requireAuth, async (c) => {
   return c.redirect('/', 302)
 })
 
-
 // for debug
 // ★診断ルート（秘密は出さない・true/falseだけ）
-app.get('/__env', (c) => c.json({
-  hasDB: !!c.env.DB,
-  hasAdminUser: !!c.env.ADMIN_USER,
-  hasSessionSecret: !!c.env.SESSION_SECRET,
-}))
+app.get('/__env', (c) =>
+  c.json({
+    hasDB: !!c.env.DB,
+    hasAdminUser: !!c.env.ADMIN_USER,
+    hasSessionSecret: !!c.env.SESSION_SECRET,
+  }),
+)
 
 // 任意：生存確認
 app.get('/__ping', (c) => c.text('pong'))
