@@ -1,7 +1,7 @@
 name = "blog"
 compatibility_date = "2025-08-11"
 pages_build_output_dir = "public"
-
+assets = { directory = "public" }
 [[d1_databases]]
 binding = "DB"
 database_name = "blog"
