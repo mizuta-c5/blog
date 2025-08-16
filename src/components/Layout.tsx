@@ -24,24 +24,15 @@ export const Layout = (title: string, body: any, opts?: { wide?: boolean }) => {
           href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown.min.css"
         />
       </head>
-      <body class="max-w-${opts?.wide ? '5xl' : 'xl'} ml-4 mr-4 my-10 px-4 font-sans">
-        ${body}
+      <body
+        class="max-w-${opts?.wide
+          ? '5xl'
+          : 'xl'} ml-4 mr-4 my-5 px-4 font-sansh-screen overflow-hidden flex flex-col"
+      >
+        <div class="main-content flex-1 flex flex-col justify-center items-center">
+          ${body}
+        </div>
       </body>
-      <footer class="text-center text-sm text-gray-500">
-        <p class="flex justify-center gap-4">
-          <a href="https://github.com/mizuta-c5" class="text-gray-500 hover:text-gray-700"
-            ><i class="fab fa-github text-2xl"></i
-          ></a>
-          <a href="https://x.com/mizuta_c5" class="text-gray-500 hover:text-gray-700"
-            ><i class="fab fa-twitter text-2xl"></i
-          ></a>
-          <a
-            href="https://www.linkedin.com/in/naoki-mizuta-b1b2602a7/"
-            class="text-gray-500 hover:text-gray-700"
-            ><i class="fab fa-linkedin text-2xl"></i
-          ></a>
-        </p>
-      </footer>
     </html>
   `
 }
