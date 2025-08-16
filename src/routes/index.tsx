@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { html } from 'hono/html'
 import { Layout } from '../components/Layout'
 import { Nav } from '../components/Nav'
+import SkillsModal from '../components/SkillsModal'
 import { getUserFromCookie } from '../middleware/auth'
 import type { Bindings, Variables } from '../types'
 
@@ -85,47 +86,23 @@ home.get('/', async (c) => {
           </div>
         </section>
 
-        <script>
-          ;(function () {
-            var pane = document.getElementById('pane')
-            var content = document.getElementById('pane-content')
-            if (!pane || !content) return
-            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-            function applyParallax(e) {
-              var r = pane.getBoundingClientRect()
-              var x = (e.clientX - r.left) / r.width - 0.5
-              var y = (e.clientY - r.top) / r.height - 0.5
-              content.style.transform = 'translate(' + x * 5 + 'px, ' + y * 3 + 'px) scale(1.005)'
-            }
-            function reset() {
-              content.style.transform = 'translate(0,0) scale(1)'
-            }
-            if (!reduce) {
-              pane.removeEventListener('mousemove', applyParallax)
-              pane.removeEventListener('mouseleave', reset)
-              pane.removeEventListener(
-                'touchmove',
-                function (e) {
-                  var t = e.touches[0]
-                  if (t) applyParallax(t)
-                },
-                { passive: true },
-              )
-              pane.removeEventListener('touchend', reset)
-            }
-          })()
-        </script>
-
         <section id="about" class="about sm:p-20 pb-10 mt-12">
           <div class="container mx-auto">
             <h2 class="text-3xl font-bold mb-8 text-center">About</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div class="feature bg-white p-6 rounded-lg shadow-md">
+              <div
+                id="open-skills"
+                role="button"
+                tabindex="0"
+                class="feature cursor-pointer bg-white p-6 rounded-lg shadow-md outline-none focus:ring-2 focus:ring-indigo-500 hover:shadow-lg transition"
+                aria-haspopup="dialog"
+                aria-controls="skills-modal"
+                aria-label="Open Skills modal"
+              >
                 <h3 class="text-2xl font-semibold mb-4">Skills</h3>
                 <p>Key abilities and expertise.</p>
               </div>
-              <div class="feature bg-white p-6 rounded-lg shadow-md ">
+              <div class="feature bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-2xl font-semibold mb-4">Projects</h3>
                 <p>Notable work and achievements.</p>
               </div>
@@ -136,6 +113,9 @@ home.get('/', async (c) => {
             </div>
           </div>
         </section>
+        ${SkillsModal()}
+        <script type="module" src="/js/home.js"></script>
+        <script type="module" src="/js/editor.js"></script>
       `,
     ),
   )
