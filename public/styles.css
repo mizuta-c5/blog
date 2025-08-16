@@ -1,3 +1,54 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.markdown-body {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+/* ベース */
+.markdown-body ul { list-style: disc; padding-left: 1.5rem; }
+.markdown-body ol { list-style: decimal; padding-left: 1.5rem; }
+.markdown-body li { margin: .25rem 0; }
+/* ネスト */
+.markdown-body ul ul { list-style: circle; }
+.markdown-body ul ul ul { list-style: square; }
+/* もし marker 色が消されている場合の保険 */
+.markdown-body li::marker { color: currentColor; }
+
+/* 画像は常にコンテナ幅にフィット */
+.markdown-body img { max-width: 100%; height: auto; display: block; }
+
+/* 表は横スクロール可（Markdownレンダラがラップしなくても効かせる） */
+.markdown-body table { display: block; width: max-content; max-width: 100%; overflow-x: auto; }
+.markdown-body th, .markdown-body td { white-space: nowrap; }
+
+/* コードブロックは折り返さず横スクロール */
+.markdown-body pre { overflow-x: auto; }
+
+/* 埋め込み（YouTube等）を16:9でレスポンシブ化 */
+.markdown-body iframe, .markdown-body video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+ }
+
+/* 余白の最適化（モバイルで詰めすぎない） */
+.markdown-body h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); }
+.markdown-body h2 { font-size: clamp(1.25rem, 4.5vw, 1.875rem); }
+.markdown-body h3 { font-size: clamp(1.125rem, 4vw, 1.5rem); }

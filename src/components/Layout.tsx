@@ -19,6 +19,10 @@ export const Layout = (title: string, body: any, opts?: { wide?: boolean }) => {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown.min.css"
+        />
       </head>
       <body class="max-w-${opts?.wide ? '5xl' : 'xl'} ml-4 mr-4 my-10 px-4 font-sans">
         ${body}
@@ -31,7 +35,9 @@ export const Layout = (title: string, body: any, opts?: { wide?: boolean }) => {
           <a href="https://x.com/mizuta_c5" class="text-gray-500 hover:text-gray-700"
             ><i class="fab fa-twitter text-2xl"></i
           ></a>
-          <a href="https://www.linkedin.com/in/naoki-mizuta-b1b2602a7/" class="text-gray-500 hover:text-gray-700"
+          <a
+            href="https://www.linkedin.com/in/naoki-mizuta-b1b2602a7/"
+            class="text-gray-500 hover:text-gray-700"
             ><i class="fab fa-linkedin text-2xl"></i
           ></a>
         </p>

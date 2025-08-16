@@ -2,9 +2,8 @@ import { Hono } from 'hono'
 import { logger } from 'hono/logger'
 import { secureHeaders } from 'hono/secure-headers'
 import { auth } from './routes/auth'
-import { editor } from './routes/editor'
+import { blog } from './routes/blog'
 import { home } from './routes/index'
-import { post } from './routes/post'
 import type { Bindings, Variables } from './types'
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
@@ -15,8 +14,7 @@ app.use('*', secureHeaders())
 // ルーティング
 app.route('/', home)
 app.route('/', auth)
-app.route('/', editor)
-app.route('/', post)
+app.route('/', blog)
 
 // debug
 
