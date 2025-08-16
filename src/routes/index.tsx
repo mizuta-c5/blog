@@ -27,6 +27,9 @@ home.get('/', async (c) => {
               <video autoplay loop muted playsinline class="w-full h-full object-cover">
                 <source src="/sunset_beach.mp4" type="video/mp4" />
               </video>
+              <div
+                class="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-black to-transparent"
+              ></div>
 
               <div class="pointer-events-none absolute inset-0" aria-hidden="true">
                 <div

@@ -1,7 +1,9 @@
 import { html } from 'hono/html'
 
 export const Nav = (user: { name: string } | null) => {
-  return html`<nav class="w-full flex items-center justify-between font-bold text-lg mb-8">
+  return html`<nav
+    class="w-full flex items-center justify-between font-bold text-lg mb-8"
+  >
     <div class="flex items-center gap-4">
       <a href="/" class="text-gray-500 hover:text-gray-700">Home</a>
       <a href="#" class="text-gray-400 cursor-not-allowed" aria-disabled="true">About</a>
