@@ -3,6 +3,11 @@ import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
 import { verify } from 'hono/jwt'
 import type { Bindings, Variables } from '../types'
 
+interface JwtPayload {
+  sub: string
+  // Add other properties if needed
+}
+
 // This function retrieves the user from a cookie using JWT verification
 export async function getUserFromCookie(c: Context<{ Bindings: Bindings; Variables: Variables }>) {
   const token = getCookie(c, 'session')
@@ -10,8 +15,8 @@ export async function getUserFromCookie(c: Context<{ Bindings: Bindings; Variabl
   if (!token) return null
   try {
     // Verify the token using the session secret
-    const payload = await verify(token, c.env.SESSION_SECRET)
-    return { name: (payload as any).sub as string }
+    const payload = (await verify(token, c.env.SESSION_SECRET)) as JwtPayload
+    return { name: payload.sub }
   } catch {
     return null
   }

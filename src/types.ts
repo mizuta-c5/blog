@@ -1,6 +1,6 @@
 import type { D1Database } from '@cloudflare/workers-types'
 
-export type Bindings = {
+export interface Bindings {
   DB: D1Database // データベース
   ADMIN_USER: string // 管理者ユーザー
   ADMIN_PASS: string // 管理者パスワード
@@ -8,6 +8,6 @@ export type Bindings = {
   NODE_ENV: string // ノード環境
 }
 
-export type Variables = {
+export interface Variables {
   user: { name: string } // ユーザー
 }

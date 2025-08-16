@@ -1,0 +1,4 @@
+dist/** linguist-generated
+*.d.ts linguist-generated
+vendor/** linguist-vendored
+node_modules/** linguist-vendored

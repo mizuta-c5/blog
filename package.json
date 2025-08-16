@@ -29,6 +29,13 @@
       "**/?(*.)+(spec|test).(ts|tsx|js)"
     ]
   },
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250810.0",
     "hono": "^4.9.1",
@@ -42,6 +49,8 @@
     "@types/markdown-it": "^14.1.2",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
+    "@typescript-eslint/parser": "^8.39.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.33.0",
     "globals": "^16.3.0",
@@ -54,6 +63,7 @@
     "ts-jest": "^29.4.1",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
+    "typescript-eslint": "^8.39.1",
     "wrangler": "^4.30.0"
   }
 }

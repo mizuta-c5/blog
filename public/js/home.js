@@ -1,2 +1,38 @@
-function l(r,d){let n=document.getElementById(r),e=document.getElementById(d);if(!n||!e||typeof e.showModal!="function")return;let s=()=>{e.showModal(),requestAnimationFrame(()=>e.classList.add("is-open"))},i=()=>{e.classList.remove("is-open");let t=!1,o=()=>{t||(t=!0,e.removeEventListener("transitionend",o,!0),e.close())};e.addEventListener("transitionend",o,!0),setTimeout(o,600)};n.addEventListener("click",s),n.addEventListener("keydown",t=>{(t.key==="Enter"||t.key===" ")&&(t.preventDefault(),s())}),e.querySelector(".overlay")?.addEventListener("click",i),e.addEventListener("cancel",t=>{t.preventDefault(),i()})}l("open-skills","skills-modal");
+// src/client/utils/modal.ts
+function setupDialog(triggerId, dialogId) {
+  const btn = document.getElementById(triggerId);
+  const dlg = document.getElementById(dialogId);
+  if (!btn || !dlg || typeof dlg.showModal !== "function") return;
+  const open = () => {
+    dlg.showModal();
+    requestAnimationFrame(() => dlg.classList.add("is-open"));
+  };
+  const closeWithAnim = () => {
+    dlg.classList.remove("is-open");
+    let done = false;
+    const onEnd = () => {
+      if (done) return;
+      done = true;
+      dlg.removeEventListener("transitionend", onEnd, true);
+      dlg.close();
+    };
+    dlg.addEventListener("transitionend", onEnd, true);
+    setTimeout(onEnd, 600);
+  };
+  btn.addEventListener("click", open);
+  btn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      open();
+    }
+  });
+  dlg.querySelector(".overlay")?.addEventListener("click", closeWithAnim);
+  dlg.addEventListener("cancel", (e) => {
+    e.preventDefault();
+    closeWithAnim();
+  });
+}
+
+// src/client/home.ts
+setupDialog("open-skills", "skills-modal");
 //# sourceMappingURL=home.js.map

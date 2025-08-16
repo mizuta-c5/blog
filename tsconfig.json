@@ -7,7 +7,9 @@
     "skipLibCheck": true,
     "lib": ["es2022", "dom"],
     "jsx": "react-jsx",
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
   },
   "extends": "./tsconfig.json",
-  "include": ["src/client/**/*"]
+  "include": ["src/**/*"]
 }

@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { sign } from 'hono/jwt'
-import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import Layout from '../components/Layout'
 import { cookies, getUserFromCookie } from '../middleware/auth'
@@ -34,15 +33,15 @@ auth.get('/login', async (c) => {
             Sign in
           </button>
         </form>
-      </Layout>
+      </Layout>,
     ),
   )
 })
 
 auth.post('/login', async (c) => {
   const form = await c.req.parseBody()
-  const user = String(form['username'] || '')
-  const pass = String(form['password'] || '')
+  const user = typeof form.username === 'string' ? form.username : ''
+  const pass = typeof form.password === 'string' ? form.password : ''
   if (user !== c.env.ADMIN_USER || pass !== c.env.ADMIN_PASS) {
     return c.redirect('/login', 302)
   }

@@ -1,5 +1,4 @@
 import { Hono } from 'hono'
-import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import Layout from '../components/Layout'
 import Nav from '../components/Nav'
@@ -8,6 +7,13 @@ import { slugify } from '../lib/slugify'
 import { getUserFromCookie, requireAuth } from '../middleware/auth'
 import type { Bindings, Variables } from '../types'
 
+interface Post {
+  slug: string
+  title: string
+  content: string
+  created_at: number
+}
+
 export const blog = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 
 blog.get('/blog', async (c) => {
@@ -15,7 +21,7 @@ blog.get('/blog', async (c) => {
   const { results } = await c.env.DB.prepare(
     'SELECT slug, title, created_at FROM posts ORDER BY created_at DESC',
   ).all()
-  const list = (results as Array<{ slug: string; title: string; created_at: number }>).map((r) => (
+  const list = (results as { slug: string; title: string; created_at: number }[]).map((r) => (
     <div key={r.slug} className="post p-4 bg-white rounded-lg shadow-md mb-4">
       <a
         href={`/blog/${r.slug}`}
@@ -50,7 +56,7 @@ blog.get('/blog/:slug', async (c) => {
   if (!row) {
     return c.notFound()
   }
-  const r = row as any
+  const r = row as unknown as Post
 
   const controls = user ? (
     <div className="flex items-center gap-3 flex-wrap mt-4">
@@ -109,7 +115,7 @@ blog.post('/blog/:slug/delete', requireAuth, async (c) => {
 })
 
 // 新しい記事を作成するページを表示する
-blog.get('/new', async (c) => {
+blog.get('/new', (c) => {
   return c.html(
     ReactDOMServer.renderToString(
       <Layout title="New Post" wide={true}>
@@ -147,8 +153,8 @@ blog.get('/new', async (c) => {
 
 blog.post('/new', requireAuth, async (c) => {
   const form = await c.req.parseBody()
-  const title = String(form['title'] || '')
-  const content = String(form['content'] || '')
+  const title = typeof form.title === 'string' ? form.title : ''
+  const content = typeof form.content === 'string' ? form.content : ''
 
   if (!title || !content) {
     return c.text('Missing title or content', 400)
@@ -173,7 +179,7 @@ blog.get('/blog/edit/:slug', requireAuth, async (c) => {
   if (!row) {
     return c.notFound()
   }
-  const r = row as any
+  const r = row as unknown as Post
   return c.html(
     ReactDOMServer.renderToString(
       <Layout title="Edit Post" wide={true}>
@@ -213,8 +219,8 @@ blog.get('/blog/edit/:slug', requireAuth, async (c) => {
 blog.post('/blog/edit/:slug', requireAuth, async (c) => {
   const slug = c.req.param('slug')
   const form = await c.req.parseBody()
-  const title = String(form['title'] || '')
-  const content = String(form['content'] || '')
+  const title = typeof form.title === 'string' ? form.title : ''
+  const content = typeof form.content === 'string' ? form.content : ''
   if (!title || !content) {
     return c.text('Missing title or content', 400)
   }
