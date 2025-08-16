@@ -86,7 +86,7 @@ home.get('/', async (c) => {
           </div>
         </section>
 
-        <section id="about" class="about sm:p-20 pb-10 mt-12">
+        <section id="about" class="about sm:p-20 pb-10">
           <div class="container mx-auto">
             <h2 class="text-3xl font-bold mb-8 text-center">About</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

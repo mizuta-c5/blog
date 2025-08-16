@@ -1,0 +1,2 @@
+import r from"markdown-it";var d=new r({html:!1,linkify:!0,typographer:!0,breaks:!0}),e=document.getElementById("md"),t=document.getElementById("preview"),n=()=>{t&&(t.innerHTML=d.render(e?.value||""))};n();e&&e.addEventListener("input",n);
+//# sourceMappingURL=editor.js.map
