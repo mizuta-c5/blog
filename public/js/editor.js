@@ -1,19 +1,2 @@
-// src/client/editor.ts
-import MarkdownIt from "markdown-it";
-var md = new MarkdownIt({
-  html: false,
-  linkify: true,
-  typographer: true,
-  breaks: true
-});
-var ta = document.getElementById("md");
-var pv = document.getElementById("preview");
-var render = () => {
-  if (!pv) return;
-  pv.innerHTML = md.render(ta?.value || "");
-};
-render();
-if (ta) {
-  ta.addEventListener("input", render);
-}
+import r from"markdown-it";var d=new r({html:!1,linkify:!0,typographer:!0,breaks:!0}),e=document.getElementById("md"),t=document.getElementById("preview"),n=()=>{t&&(t.innerHTML=d.render(e?.value||""))};n();e&&e.addEventListener("input",n);
 //# sourceMappingURL=editor.js.map

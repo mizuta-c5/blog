@@ -84,7 +84,7 @@ inset -8px 0 24px rgba(0,0,0,.14)`,
             id="open-skills"
             role="button"
             tabIndex={0}
-            className="feature cursor-pointer bg-white p-6 rounded-lg shadow-md outline-none focus:ring-2 focus:ring-indigo-500 hover:shadow-lg transition"
+            className="feature cursor-pointer bg-white p-6 rounded-lg shadow-md outline-none hover:shadow-lg transition"
             aria-haspopup="dialog"
             aria-controls="skills-modal"
             aria-label="Open Skills modal"
