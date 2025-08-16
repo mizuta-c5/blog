@@ -1,19 +1,25 @@
-import { html } from 'hono/html'
+import React from 'react'
 
-export const Layout = (title: string, body: any, opts?: { wide?: boolean }) => {
-  return html`
-    <html lang="ja" class="bg-gray-100">
+interface LayoutProps {
+  title: string
+  children: React.ReactNode
+  wide?: boolean
+}
+
+const Layout: React.FC<LayoutProps> = ({ title, children, wide }) => {
+  return (
+    <html lang="ja" className="bg-gray-100">
       <head>
-        <meta charset="utf-8" />
+        <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>${title}</title>
+        <title>{title}</title>
         <link rel="icon" href="/favicon.ico?v=3" sizes="any" />
         <link rel="stylesheet" href="/output.css" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
           integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM3y5iZ9fX1pht6WZ5n6p5+8nR6c5f5f5f5f5f5"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         />
         <link
           rel="stylesheet"
@@ -25,12 +31,12 @@ export const Layout = (title: string, body: any, opts?: { wide?: boolean }) => {
         />
       </head>
       <body
-        class="max-w-${opts?.wide
-          ? '5xl'
-          : 'xl'} ml-4 mr-4 mt-0 px-4 font-sans h-screen overflow-auto md:overflow-hidden flex flex-col"
+        className={`max-w-${wide ? '5xl' : 'xl'} ml-4 mr-4 mt-0 px-4 font-sans h-screen overflow-auto md:overflow-hidden flex flex-col`}
       >
-        <div class="main-content flex flex-col justify-center items-center">${body}</div>
+        <div className="main-content flex flex-col justify-center items-center">{children}</div>
       </body>
     </html>
-  `
+  )
 }
+
+export default Layout

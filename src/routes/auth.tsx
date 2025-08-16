@@ -1,7 +1,8 @@
 import { Hono } from 'hono'
-import { html } from 'hono/html'
 import { sign } from 'hono/jwt'
-import { Layout } from '../components/Layout'
+import React from 'react'
+import ReactDOMServer from 'react-dom/server'
+import Layout from '../components/Layout'
 import { cookies, getUserFromCookie } from '../middleware/auth'
 import type { Bindings, Variables } from '../types'
 
@@ -12,23 +13,28 @@ auth.get('/login', async (c) => {
     return c.redirect('/', 302)
   }
   return c.html(
-    Layout(
-      'Login',
-      html`
-        <p class="text-2xl font-bold mb-4">Login</p>
-        <form method="post" action="/login" class="flex flex-col gap-2">
+    ReactDOMServer.renderToString(
+      <Layout title="Login">
+        <p className="text-2xl font-bold mb-4">Login</p>
+        <form method="post" action="/login" className="flex flex-col gap-2">
           <input
             name="username"
             placeholder="Username"
             required
-            class="border border-gray-300 rounded-md p-2"
+            className="border border-gray-300 rounded-md p-2"
           />
-          <input name="password" type="password" placeholder="Password" required class="border border-gray-300 rounded-md p-2" />
-          <button type="submit" class="bg-gray-500 text-white p-2 rounded-md cursor-pointer">
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+            className="border border-gray-300 rounded-md p-2"
+          />
+          <button type="submit" className="bg-gray-500 text-white p-2 rounded-md cursor-pointer">
             Sign in
           </button>
         </form>
-      `,
+      </Layout>
     ),
   )
 })

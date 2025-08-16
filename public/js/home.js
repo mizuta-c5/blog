@@ -1,2 +1,38 @@
-function a(i,c){let n=document.getElementById(i),e=document.getElementById(c);if(!n||!e||typeof e.showModal!="function")return;let l=()=>{e.showModal(),requestAnimationFrame(()=>e.classList.add("is-open"))},r=()=>{e.classList.remove("is-open");let o=!1,t=()=>{o||(o=!0,e.removeEventListener("transitionend",t,!0),e.close())};e.addEventListener("transitionend",t,!0),setTimeout(t,600)};n.addEventListener("click",l),n.addEventListener("keydown",o=>{(o.key==="Enter"||o.key===" ")&&(o.preventDefault(),l())}),e.querySelector(".overlay")?.addEventListener("click",r),e.addEventListener("cancel",o=>{o.preventDefault(),r()})}function d(i,c){let n=document.querySelector(i),e=document.querySelector(c);if(!n||!e||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;function r(t){if(!n||!e)return;let s=n.getBoundingClientRect(),u=("clientX"in t?t.clientX:0)-s.left,m=("clientY"in t?t.clientY:0)-s.top,p=u/s.width-.5,f=m/s.height-.5;e.style.transform=`translate(${p*5}px, ${f*3}px) scale(1.005)`}function o(){e&&(e.style.transform="translate(0,0) scale(1)")}n.addEventListener("mousemove",t=>r(t)),n.addEventListener("mouseleave",o),n.addEventListener("touchmove",t=>{let s=t.touches[0];s&&r(s)},{passive:!0}),n.addEventListener("touchend",o)}a("open-skills","skills-modal");d("#pane","#pane-content");
+// src/client/utils/modal.ts
+function setupDialog(triggerId, dialogId) {
+  const btn = document.getElementById(triggerId);
+  const dlg = document.getElementById(dialogId);
+  if (!btn || !dlg || typeof dlg.showModal !== "function") return;
+  const open = () => {
+    dlg.showModal();
+    requestAnimationFrame(() => dlg.classList.add("is-open"));
+  };
+  const closeWithAnim = () => {
+    dlg.classList.remove("is-open");
+    let done = false;
+    const onEnd = () => {
+      if (done) return;
+      done = true;
+      dlg.removeEventListener("transitionend", onEnd, true);
+      dlg.close();
+    };
+    dlg.addEventListener("transitionend", onEnd, true);
+    setTimeout(onEnd, 600);
+  };
+  btn.addEventListener("click", open);
+  btn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      open();
+    }
+  });
+  dlg.querySelector(".overlay")?.addEventListener("click", closeWithAnim);
+  dlg.addEventListener("cancel", (e) => {
+    e.preventDefault();
+    closeWithAnim();
+  });
+}
+
+// src/client/home.ts
+setupDialog("open-skills", "skills-modal");
 //# sourceMappingURL=home.js.map
