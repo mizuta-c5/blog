@@ -15,11 +15,18 @@ auth.get('/login', async (c) => {
     Layout(
       'Login',
       html`
-        <h1>Login</h1>
-        <form method="post" action="/login">
-          <input name="username" placeholder="Username" required />
-          <input name="password" type="password" placeholder="Password" required />
-          <button type="submit">Sign in</button>
+        <p class="text-2xl font-bold mb-4">Login</p>
+        <form method="post" action="/login" class="flex flex-col gap-2">
+          <input
+            name="username"
+            placeholder="Username"
+            required
+            class="border border-gray-300 rounded-md p-2"
+          />
+          <input name="password" type="password" placeholder="Password" required class="border border-gray-300 rounded-md p-2" />
+          <button type="submit" class="bg-gray-500 text-white p-2 rounded-md cursor-pointer">
+            Sign in
+          </button>
         </form>
       `,
     ),
