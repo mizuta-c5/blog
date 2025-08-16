@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { html } from 'hono/html'
-import { Footer } from '../components/Footer'
 import { Layout } from '../components/Layout'
 import { Nav } from '../components/Nav'
 import { getUserFromCookie } from '../middleware/auth'
@@ -65,7 +64,6 @@ home.get('/', async (c) => {
             </div>
           </div>
         </section>
-        ${Footer()}
       `,
     ),
   )
