@@ -14,7 +14,7 @@ home.get('/', async (c) => {
       html`
         ${Nav(user as { name: string } | null)}
         <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js"></script>
-        <section class="mx-auto w-full max-w-2xl">
+        <section class="mx-auto w-full max-w-2xl mt-5">
           <div
             class="relative rounded-2xl border-8 border-stone-700 dark:border-stone-300
            shadow-[inset_0_2px_10px_rgba(0,0,0,.45),0_18px_50px_rgba(0,0,0,.35)]
@@ -48,7 +48,7 @@ home.get('/', async (c) => {
           </div>
         </section>
 
-        <section id="about" class="about p-20 pb-10">
+        <section id="about" class="about sm:p-20 pb-10 mt-10">
           <div class="container mx-auto">
             <h2 class="text-3xl font-bold mb-8 text-center">About</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

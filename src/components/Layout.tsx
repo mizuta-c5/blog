@@ -27,7 +27,7 @@ export const Layout = (title: string, body: any, opts?: { wide?: boolean }) => {
       <body
         class="max-w-${opts?.wide
           ? '5xl'
-          : 'xl'} ml-4 mr-4 my-10 mt-5 px-4 font-sansh-screen overflow-hidden flex flex-col"
+          : 'xl'} ml-4 mr-4 my-10 mt-5 px-4 font-sans h-screen overflow-auto md:overflow-hidden flex flex-col"
       >
         <div class="main-content flex-1 flex flex-col justify-center items-center">${body}</div>
       </body>
