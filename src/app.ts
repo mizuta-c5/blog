@@ -1,9 +1,13 @@
 import { Hono } from 'hono'
 import { logger } from 'hono/logger'
 import { secureHeaders } from 'hono/secure-headers'
+
+// Internal routes
 import { auth } from './routes/auth'
 import { blog } from './routes/blog'
 import { home } from './routes/index'
+
+// Type imports
 import type { Bindings, Variables } from './types'
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
