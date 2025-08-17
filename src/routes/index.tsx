@@ -2,28 +2,30 @@ import { Hono } from 'hono'
 import ReactDOMServer from 'react-dom/server'
 import { slide } from '../client/slide'
 import Carousel from '../components/Carousel'
-import Hero from '../components/Hero'
+import SunsetCard from '../components/SunsetCard'
 import Layout from '../components/Layout'
 import Nav from '../components/Nav'
 import SkillsModal from '../components/SkillsModal'
-import Terminal from '../components/Terminal'
+import TerminalCard from '../components/TerminalCard'
+import ThreeDModelCard from '../components/ThreeDModelCard'
 import { getUserFromCookie } from '../middleware/auth'
 import type { Bindings, Variables } from '../types/misc'
 
-const Home = ({ user }: { user: { name: string } | null }) => (
+const Home = ({ user }: { user: { name: string } | null }) => ( 
   <Layout title="Welcome to Our Site">
     <Nav user={user} />
 
-    <section className={`${slide.section} w-screen`}>
+    <section className={`${slide.section} w-screen h-[50vh] flex items-center`}>
       <Carousel>
-        <Hero />
-        <Terminal />
+        <SunsetCard />
+        <TerminalCard />
+        <ThreeDModelCard />
         {/* 必要なら他のスライドも同じ枠で追加 */}
         {/* <AnotherCard /> */}
       </Carousel>
     </section>
 
-    <section id="about" className="about sm:p-20 pb-10 mt-10 sm:mt-0">
+    <section id="about" className="about sm:p-10 mt-10 sm:mt-0">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold mb-8 text-center">About</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -47,20 +49,14 @@ const Home = ({ user }: { user: { name: string } | null }) => (
             <h3 className="text-2xl font-semibold mb-4">Contact</h3>
             <p>Ways to reach me.</p>
           </div>
-        </div>
+         </div>
       </div>
     </section>
 
     <SkillsModal />
 
-    {/* 既存のクライアントJS */}
-    <script type="module" src="/js/home.js" />
-    <script type="module" src="/js/editor.js" />
-    <script src="/js/terminal.js" defer></script>
-    <script src="/js/hero.js" defer></script>
-    <script src="/js/carousel.js" defer></script>
+    <script type="module" src="/editor.js" />
 
-    {/* onloadeddata をJSでハンドル（TS構文なし） */}
     <script>{`
       (() => {
         const v = document.getElementById('hero-video');

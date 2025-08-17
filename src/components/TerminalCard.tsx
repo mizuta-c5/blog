@@ -1,7 +1,7 @@
 import React from "react";
 import { slide } from "../client/slide";
 
-export default function Terminal() {
+export default function TerminalCard() {
   return (
     <div className="relative group">
       <div className={slide.card}>

@@ -1,13 +1,12 @@
-import React from "react";
-import { slide } from "../client/slide";
+import React from 'react'
+import { slide } from '../client/slide'
 
-export default function Hero() {
+export default function SunsetCard() {
   return (
     <div className="relative group">
-    <div className={slide.ring} />
+      <div className={slide.ring} />
       <div className={slide.card}>
-        {/* 16:9（動画に合わせる）。3:2にしたい場合は '16 / 9' → '3 / 2' に変更 */}
-        <div id="pane" className={slide.pane} style={{ aspectRatio: "16 / 9" }}>
+        <div id="pane" className={slide.pane} style={{ aspectRatio: '16/9' }}>
           <div
             id="pane-content"
             className="absolute inset-0 will-change-transform opacity-0 transition-opacity duration-1000"
@@ -18,7 +17,7 @@ export default function Hero() {
               loop
               muted
               playsInline
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover block"
             >
               <source src="/sunset_beach.mp4" type="video/mp4" />
             </video>
@@ -43,5 +42,5 @@ radial-gradient(130% 100% at -20% -20%, rgba(255,255,255,.10), transparent 60%)`
         </div>
       </div>
     </div>
-  );
+  )
 }
