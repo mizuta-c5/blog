@@ -10,7 +10,7 @@ import SampleCard2 from '../components/SampleCard2'
 import SampleCard3 from '../components/SampleCard3'
 import SkillsModal from '../components/SkillsModal'
 import TerminalCard from '../components/TerminalCard'
-import ThreeDModelCard from '../components/ThreeDModelCard'
+// import ThreeDModelCard from '../components/ThreeDModelCard'
 import { getUserFromCookie } from '../middleware/auth'
 import type { Bindings, Variables } from '../types/misc'
 
