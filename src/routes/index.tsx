@@ -2,21 +2,23 @@ import { Hono } from 'hono'
 import ReactDOMServer from 'react-dom/server'
 import { slide } from '../client/slide'
 import Carousel from '../components/Carousel'
-import SunsetCard from '../components/SunsetCard'
 import Layout from '../components/Layout'
 import Nav from '../components/Nav'
+import SampleCard1 from '../components/SampleCard1'
 import SkillsModal from '../components/SkillsModal'
+import SunsetCard from '../components/SunsetCard'
 import TerminalCard from '../components/TerminalCard'
 import ThreeDModelCard from '../components/ThreeDModelCard'
 import { getUserFromCookie } from '../middleware/auth'
 import type { Bindings, Variables } from '../types/misc'
 
-const Home = ({ user }: { user: { name: string } | null }) => ( 
+const Home = ({ user }: { user: { name: string } | null }) => (
   <Layout title="Welcome to Our Site">
     <Nav user={user} />
 
     <section className={`${slide.section} w-full h-[50vh] flex items-center`}>
-      <Carousel>
+      <Carousel slideWidth="85%" maxWidthPx={720} minWidthPx={320} gutterPx={12} edgePaddingPx={12}>
+        <SampleCard1 />
         <SunsetCard />
         <TerminalCard />
         <ThreeDModelCard />
@@ -49,7 +51,7 @@ const Home = ({ user }: { user: { name: string } | null }) => (
             <h3 className="text-2xl font-semibold mb-4">Contact</h3>
             <p>Ways to reach me.</p>
           </div>
-         </div>
+        </div>
       </div>
     </section>
 
@@ -57,16 +59,6 @@ const Home = ({ user }: { user: { name: string } | null }) => (
 
     <script type="module" src="/js/embla-init.js" defer></script>
     <script type="module" src="/js/editor.js" defer></script>
-
-    <script>{`
-      (() => {
-        const v = document.getElementById('hero-video');
-        const pane = document.getElementById('pane-content');
-        if (v && pane) {
-          v.addEventListener('loadeddata', () => { pane.style.opacity = '1'; });
-        }
-      })();
-    `}</script>
   </Layout>
 )
 
