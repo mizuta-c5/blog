@@ -43,6 +43,8 @@
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250810.0",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "hono": "^4.9.1",
     "markdown-it": "^14.1.0",
     "react": "^19.1.1",

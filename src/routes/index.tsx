@@ -1,79 +1,26 @@
 import { Hono } from 'hono'
+import ReactDOMServer from 'react-dom/server'
+import { slide } from '../client/slide'
+import Carousel from '../components/Carousel'
+import Hero from '../components/Hero'
 import Layout from '../components/Layout'
 import Nav from '../components/Nav'
 import SkillsModal from '../components/SkillsModal'
+import Terminal from '../components/Terminal'
 import { getUserFromCookie } from '../middleware/auth'
-import type { Bindings, Variables } from '../types'
-import React from 'react'
-import ReactDOMServer from 'react-dom/server'
+import type { Bindings, Variables } from '../types/misc'
 
 const Home = ({ user }: { user: { name: string } | null }) => (
   <Layout title="Welcome to Our Site">
     <Nav user={user} />
 
-    <section className="mx-auto w-full max-w-3xl md:mt-12">
-      <div className="relative group">
-        {/* グラデのリング（極薄） */}
-        <div
-          className="absolute -inset-0.5 rounded-[22px]
-                 bg-[conic-gradient(at_30%_120%,theme(colors.zinc.400),theme(colors.zinc.700),theme(colors.zinc.400))]
-                 opacity-30 blur-sm transition duration-500 group-hover:opacity-60"
-        />
-
-        {/* 外枠：ガラスカード */}
-        <div
-          className="relative rounded-[22px] bg-zinc-50/60 dark:bg-zinc-900/50
-                 backdrop-blur-xl ring-1 ring-black/10 dark:ring-white/10
-                 shadow-[0_10px_40px_-10px_rgba(0,0,0,.35)] p-2"
-        >
-          {/* ガラス面 */}
-          <div
-            id="pane"
-            className="relative overflow-hidden rounded-[16px] ring-1 ring-inset ring-black/10 dark:ring-white/10"
-            style={{ aspectRatio: '16 / 9' }}
-          >
-            {/* 中身（動画 + 仕上げ） */}
-            <div
-              id="pane-content"
-              className="absolute inset-0 will-change-transform opacity-0 transition-opacity duration-1000"
-            >
-              <video
-                id="hero-video"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
-              >
-                <source src="/sunset_beach.mp4" type="video/mp4" />
-              </video>
-
-              {/* 下部の遮光 */}
-              <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/60 to-transparent" />
-
-              {/* 斜めグレア（細く・弱く） */}
-              <div
-                className="pointer-events-none absolute inset-0 mix-blend-screen opacity-20"
-                style={{
-                  background: `linear-gradient(108deg, rgba(255,255,255,.36) 0%, rgba(255,255,255,.10) 14%, rgba(255,255,255,0) 36%),
-radial-gradient(130% 100% at -20% -20%, rgba(255,255,255,.10), transparent 60%)`,
-                }}
-              />
-
-              {/* エッジの“段差”だけで面を見せる */}
-              <div
-                className="pointer-events-none absolute inset-0 rounded-[16px]"
-                style={{
-                  boxShadow: `inset 0 28px 50px rgba(0,0,0,.18),
-inset 0 -26px 44px rgba(0,0,0,.22),
-inset 8px 0 24px rgba(0,0,0,.14),
-inset -8px 0 24px rgba(0,0,0,.14)`,
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+    <section className={`${slide.section} w-screen`}>
+      <Carousel>
+        <Hero />
+        <Terminal />
+        {/* 必要なら他のスライドも同じ枠で追加 */}
+        {/* <AnotherCard /> */}
+      </Carousel>
     </section>
 
     <section id="about" className="about sm:p-20 pb-10 mt-10 sm:mt-0">
@@ -109,6 +56,9 @@ inset -8px 0 24px rgba(0,0,0,.14)`,
     {/* 既存のクライアントJS */}
     <script type="module" src="/js/home.js" />
     <script type="module" src="/js/editor.js" />
+    <script src="/js/terminal.js" defer></script>
+    <script src="/js/hero.js" defer></script>
+    <script src="/js/carousel.js" defer></script>
 
     {/* onloadeddata をJSでハンドル（TS構文なし） */}
     <script>{`

@@ -8,7 +8,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ title, children, wide }) => {
   return (
-    <html lang="ja" className="bg-gray-100">
+    <html lang="ja" className="bg-gray-100 w-screen">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -31,7 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ title, children, wide }) => {
         />
       </head>
       <body
-        className={`max-w-${wide ? '5xl' : 'xl'} ml-4 mr-4 mt-0 px-4 font-sans h-screen overflow-auto md:overflow-hidden flex flex-col`}
+        className={`max-w-${wide ? '5xl' : 'xl'} mt-0 font-sans h-screen overflow-auto md:overflow-hidden flex flex-col`}
       >
         <div className="main-content flex flex-col justify-center items-center">{children}</div>
       </body>

@@ -8,7 +8,7 @@ import { blog } from './routes/blog'
 import { home } from './routes/index'
 
 // Type imports
-import type { Bindings, Variables } from './types'
+import type { Bindings, Variables } from './types/misc'
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 

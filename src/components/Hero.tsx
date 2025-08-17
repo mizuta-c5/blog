@@ -1,0 +1,47 @@
+import React from "react";
+import { slide } from "../client/slide";
+
+export default function Hero() {
+  return (
+    <div className="relative group">
+    <div className={slide.ring} />
+      <div className={slide.card}>
+        {/* 16:9（動画に合わせる）。3:2にしたい場合は '16 / 9' → '3 / 2' に変更 */}
+        <div id="pane" className={slide.pane} style={{ aspectRatio: "16 / 9" }}>
+          <div
+            id="pane-content"
+            className="absolute inset-0 will-change-transform opacity-0 transition-opacity duration-1000"
+          >
+            <video
+              id="hero-video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/sunset_beach.mp4" type="video/mp4" />
+            </video>
+
+            {/* 下部の遮光 */}
+            <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/60 to-transparent" />
+
+            {/* 斜めグレア */}
+            <div
+              className="pointer-events-none absolute inset-0 mix-blend-screen opacity-20"
+              style={{
+                background: `linear-gradient(108deg, rgba(255,255,255,.36) 0%, rgba(255,255,255,.10) 14%, rgba(255,255,255,0) 36%),
+radial-gradient(130% 100% at -20% -20%, rgba(255,255,255,.10), transparent 60%)`,
+              }}
+            />
+
+            {/* エッジの段差 */}
+            <div
+              className="pointer-events-none absolute inset-0 rounded-[16px]"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

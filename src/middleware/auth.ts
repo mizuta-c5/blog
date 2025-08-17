@@ -1,7 +1,7 @@
 import { Context, Next } from 'hono'
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
 import { verify } from 'hono/jwt'
-import type { Bindings, Variables } from '../types'
+import type { Bindings, Variables } from '../types/misc'
 
 interface JwtPayload {
   sub: string

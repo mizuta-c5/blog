@@ -3,7 +3,7 @@ import { sign } from 'hono/jwt'
 import ReactDOMServer from 'react-dom/server'
 import Layout from '../components/Layout'
 import { cookies, getUserFromCookie } from '../middleware/auth'
-import type { Bindings, Variables } from '../types'
+import type { Bindings, Variables } from '../types/misc'
 
 export const auth = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 

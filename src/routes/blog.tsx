@@ -5,7 +5,7 @@ import Nav from '../components/Nav'
 import { renderMarkdown } from '../lib/markdown'
 import { slugify } from '../lib/slugify'
 import { getUserFromCookie, requireAuth } from '../middleware/auth'
-import type { Bindings, Variables } from '../types'
+import type { Bindings, Variables } from '../types/misc'
 
 interface Post {
   slug: string

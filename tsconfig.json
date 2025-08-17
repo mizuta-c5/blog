@@ -8,8 +8,7 @@
     "lib": ["es2022", "dom"],
     "jsx": "react-jsx",
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": true
   },
-  "extends": "./tsconfig.json",
   "include": ["src/**/*"]
 }
