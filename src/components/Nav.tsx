@@ -6,7 +6,7 @@ interface NavProps {
 
 const Nav: React.FC<NavProps> = ({ user }) => {
   return (
-    <nav className="w-full flex flex-col sm:flex-row items-center justify-between font-bold text-lg sm:text-2xl p-10 pl-5 pr-5">
+    <nav className="w-full flex flex-col sm:flex-row items-center justify-between font-bold text-lg sm:text-2xl p-5 sm:p-10 sm:pl-5 sm:pr-5">
       <div className="flex flex-row items-center gap-2 sm:gap-4">
         <a href="/" className="text-gray-500 hover:text-gray-700">
           Home

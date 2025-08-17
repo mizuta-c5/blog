@@ -16,7 +16,7 @@ const Home = ({ user }: { user: { name: string } | null }) => (
   <Layout title="Welcome to Our Site">
     <Nav user={user} />
 
-    <section className={`${slide.section} w-full h-[50vh] flex items-center`}>
+    <section className={`${slide.section} w-full h-[30vh] sm:h-[50vh] flex items-center`}>
       <Carousel slideWidth="85%" maxWidthPx={720} minWidthPx={320} gutterPx={12} edgePaddingPx={12}>
         <SampleCard1 />
         <SunsetCard />
@@ -27,7 +27,7 @@ const Home = ({ user }: { user: { name: string } | null }) => (
       </Carousel>
     </section>
 
-    <section id="about" className="about sm:p-10 mt-10 sm:mt-0">
+    <section id="about" className="about p-5 sm:p-10">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold mb-8 text-center">About</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
