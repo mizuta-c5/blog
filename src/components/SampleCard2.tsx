@@ -20,8 +20,8 @@ export default function SampleCard1() {
         <div id="pane" className={`${slide.pane} aspect-[16/9] isolate`}>
           <div className="absolute inset-0 rounded-[16px]">
             <img
-              src="/img/42logo.jpg"
-              alt="42"
+              src="/img/aic.png"
+              alt="AIC"
               className="absolute inset-0 object-cover w-full h-full rounded-[16px] opacity-100 transition-opacity"
             />
           </div>

@@ -1,11 +1,13 @@
-import React from "react";
-import { slide } from "../client/slide";
+import { slide } from '../client/slide'
 
 export default function TerminalCard() {
   return (
     <div className="relative group">
       <div className={slide.card}>
-        <div className={`${slide.pane} flex flex-col`} style={{ aspectRatio: "16 / 9" }}>
+        <div
+          className={`${slide.pane} flex flex-col bg-black text-green-500`}
+          style={{ aspectRatio: '16 / 9' }}
+        >
           {/* タイトルバー */}
           <div className={slide.termBar}>
             <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
@@ -21,12 +23,17 @@ export default function TerminalCard() {
           <div className={slide.termInRow}>
             <div className="flex items-center gap-2 font-mono text-[13px] leading-6">
               <span className="text-emerald-600 select-none">$</span>
-              <input id="term-input" type="text" autoComplete="off" className={slide.termIn}
-                     placeholder="type 'help' and hit Enter" />
+              <input
+                id="term-input"
+                type="text"
+                autoComplete="off"
+                className={slide.termIn}
+                placeholder="type 'help' and hit Enter"
+              />
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

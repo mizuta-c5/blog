@@ -6,6 +6,8 @@ import Carousel from '../components/Carousel'
 import Layout from '../components/Layout'
 import Nav from '../components/Nav'
 import SampleCard1 from '../components/SampleCard1'
+import SampleCard2 from '../components/SampleCard2'
+import SampleCard3 from '../components/SampleCard3'
 import SkillsModal from '../components/SkillsModal'
 import TerminalCard from '../components/TerminalCard'
 import ThreeDModelCard from '../components/ThreeDModelCard'
@@ -18,10 +20,12 @@ const Home = ({ user }: { user: { name: string } | null }) => (
 
     <section className={`${slide.section} w-full h-[30vh] sm:h-[50vh] flex items-center`}>
       <Carousel slideWidth="85%" maxWidthPx={720} minWidthPx={320} gutterPx={12} edgePaddingPx={12}>
-        <SampleCard1 />
         <AISunsetCard />
         <TerminalCard />
-        <ThreeDModelCard />
+        <SampleCard1 />
+        <SampleCard2 />
+        <SampleCard3 />
+        {/* <ThreeDModelCard /> */}
         {/* 必要なら他のスライドも同じ枠で追加 */}
         {/* <AnotherCard /> */}
       </Carousel>
