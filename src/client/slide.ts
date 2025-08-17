@@ -12,7 +12,7 @@ interface Slide {
 export const slide: Slide = {
   section: 'mx-auto w-full',
   // p-2 → モバイルで p-1、SM以上で従来どおり p-2
-  card: 'relative rounded-[22px] bg-zinc-50/60 dark:bg-zinc-900/50 backdrop-blur-xl w-full aspect-[16/9] p-1 sm:p-2',
+  card: 'relative rounded-[22px] bg-zinc-50 dark:bg-zinc-900/50 backdrop-blur-xl w-full aspect-[16/9] p-0.5 sm:p-1.5',
   // pane も同様に
   pane: 'relative overflow-hidden rounded-[16px] p-1 sm:p-2',
   // バー/本文周りも少し詰めるとバランス良い
