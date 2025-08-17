@@ -90,15 +90,15 @@ export default function Carousel({
         data-embla="viewport" 
       >
         {/* track: 左右paddingは0にしてスナップ中心の見た目ズレを防ぐ */}
-        <div className="flex will-change-transform w-full px-0 py-0" data-embla="container">
+        <div className="flex will-change-transform w-full" data-embla="container">
           {slides.map((child, i) => (
             <div
               key={i}
               className={[
-                'transition-all motion-safe:duration-300 ease-out shrink-0',
+                'transition-all motion-safe:duration-300 ease-out shrink-0 mr-2 ml-2',
                 i === selected ? 'scale-100 opacity-100 z-10' : 'scale-95 opacity-60 z-0',
               ].join(' ')}
-              style={{ flex: `0 0 ${basis}`, marginRight: i === slides.length - 1 ? 0 : '1rem' }}
+              style={{ flex: `0 0 ${basis}`}}
               aria-current={i === selected ? 'true' : 'false'}
             >
               {child}

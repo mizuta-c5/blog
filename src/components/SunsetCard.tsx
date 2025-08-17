@@ -9,7 +9,7 @@ export default function SunsetCard() {
         <div id="pane" className={slide.pane} style={{ aspectRatio: '16/9' }}>
           <div
             id="pane-content"
-            className="absolute inset-0 will-change-transform opacity-0 transition-opacity duration-1000"
+            className="absolute inset-0 will-change-transform opacity-0 transition-opacity"
           >
             <video
               id="hero-video"
