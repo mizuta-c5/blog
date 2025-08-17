@@ -6,6 +6,7 @@ import { secureHeaders } from 'hono/secure-headers'
 import { auth } from './routes/auth'
 import { blog } from './routes/blog'
 import { home } from './routes/index'
+import { atcoder } from './routes/atcoder'
 
 // Type imports
 import type { Bindings, Variables } from './types/misc'
@@ -19,6 +20,7 @@ app.use('*', secureHeaders())
 app.route('/', home)
 app.route('/', auth)
 app.route('/', blog)
+app.route('/', atcoder)
 
 // debug
 
@@ -33,3 +35,4 @@ app.get('/__env', (c) =>
 )
 
 export default app
+  

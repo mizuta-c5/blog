@@ -53,19 +53,17 @@ blog.get('/blog/:slug', async (c) => {
   const slug = c.req.param('slug')
   const row = await c.env.DB.prepare(
     'SELECT slug, title, content, created_at FROM posts WHERE slug = ?',
-  )
-    .bind(slug)
-    .first()
-  if (!row) {
-    return c.notFound()
-  }
+  ).bind(slug).first()
+
+  if (!row) return c.notFound()
   const r = row as unknown as Post
+  const createdAt = new Date(r.created_at * 1000)
 
   const controls = user ? (
-    <div className="flex items-center gap-3 flex-wrap mt-4">
+    <div className="flex items-center gap-3 flex-wrap mt-8">
       <a
         href={`/blog/edit/${r.slug}`}
-        className="inline-flex h-9 items-center justify-center rounded-md bg-gray-600 px-4 font-semibold text-white leading-none hover:bg-gray-700"
+        className="inline-flex h-10 items-center justify-center rounded-xl bg-gray-600 px-4 font-semibold text-white leading-none hover:bg-gray-700 transition"
       >
         Edit
       </a>
@@ -77,14 +75,14 @@ blog.get('/blog/:slug', async (c) => {
       >
         <button
           type="submit"
-          className="inline-flex h-9 items-center justify-center rounded-md bg-gray-600 px-4 font-semibold text-white leading-none hover:bg-gray-700"
+          className="inline-flex h-10 items-center justify-center rounded-xl bg-gray-600 px-4 font-semibold text-white leading-none hover:bg-gray-700 transition"
         >
           Delete
         </button>
       </form>
       <a
         href="/"
-        className="inline-flex h-9 items-center justify-center rounded-md bg-gray-600 px-4 font-semibold text-white leading-none hover:bg-gray-700"
+        className="inline-flex h-10 items-center justify-center rounded-xl bg-gray-600 px-4 font-semibold text-white leading-none hover:bg-gray-700 transition"
       >
         Back to Home
       </a>
@@ -95,21 +93,66 @@ blog.get('/blog/:slug', async (c) => {
     ReactDOMServer.renderToString(
       <Layout title={r.title}>
         <Nav user={user as { name: string } | null} />
-        <div className="post p-8 bg-white rounded-lg shadow-md mb-8">
-          <p className="text-2xl sm:text-3xl lg:text-4xl font-bold">{r.title}</p>
-          <div className="flex justify-end text-sm text-gray-500">
-            <small>{new Date(r.created_at * 1000).toLocaleString('ja-JP')}</small>
+
+        <div className="mx-auto w-full max-w-screen-3xl px-4 md:px-6 lg:px-8">
+          {/* パンくず */}
+          <nav className="mb-4 text-sm text-gray-500">
+            <a href="/" className="hover:text-gray-700">Home</a>
+            <span className="mx-2">/</span>
+            <a href="/blog" className="hover:text-gray-700">Blog</a>
+            <span className="mx-2">/</span>
+            <span className="text-gray-600">{r.title}</span>
+          </nav>
+
+          {/* カード（グラデリング + ガラスっぽい面） */}
+          <div className="relative group">
+            <div
+              className="pointer-events-none absolute -inset-0.5 rounded-[22px]
+                         bg-[conic-gradient(at_30%_120%,theme(colors.zinc.400),theme(colors.zinc.700),theme(colors.zinc.400))]
+                         opacity-20 blur-sm transition group-hover:opacity-30"
+            />
+            <div
+              className="relative rounded-[20px] border border-gray-200/70 bg-white/90
+                         shadow-lg backdrop-blur-sm"
+            >
+              {/* ヘッダー */}
+              <header className="px-6 pt-6 pb-4 md:px-6 md:pt-8 md:pb-6">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-800">
+                  {r.title}
+                </h1>
+                <div className="mt-2 flex items-center gap-3 text-sm text-gray-500">
+                  <time dateTime={createdAt.toISOString()}>
+                    {createdAt.toLocaleString('ja-JP')}
+                  </time>
+                </div>
+              </header>
+
+              {/* 区切り線 */}
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+
+              {/* 本文 */}
+              <article
+                className="px-2 py-6 md:px-8 md:py-8"
+              >
+                <div
+                  className="markdown-body prose max-w-none prose-headings:scroll-mt-24
+                             prose-pre:rounded-xl prose-pre:border prose-pre:border-gray-200
+                             prose-img:rounded-xl prose-hr:border-gray-200
+                             selection:bg-gray-200"
+                  // 色は .markdown-body の既存CSSで継承
+                  dangerouslySetInnerHTML={{ __html: renderMarkdown(r.content) }}
+                />
+              </article>
+            </div>
           </div>
-          <article
-            className="markdown-body mx-auto w-full max-w-screen-md"
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(r.content) }}
-          />
+
+          {controls}
         </div>
-        {controls}
       </Layout>,
     ),
   )
 })
+
 
 blog.post('/blog/:slug/delete', requireAuth, async (c) => {
   const slug = c.req.param('slug')
