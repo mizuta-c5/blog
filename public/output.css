@@ -646,10 +646,6 @@ video {
   margin-left: auto;
 }
 
-.mt-0 {
-  margin-top: 0px;
-}
-
 .mt-10 {
   margin-top: 2.5rem;
 }
@@ -710,16 +706,16 @@ video {
   height: 100%;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
 .max-h-none {
   max-height: none;
 }
 
 .min-h-0 {
   min-height: 0px;
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-2\.5 {
@@ -1442,10 +1438,6 @@ video {
 @media (min-width: 768px) {
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .md\:overflow-hidden {
-    overflow: hidden;
   }
 
   .md\:text-xs {

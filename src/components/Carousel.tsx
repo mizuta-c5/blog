@@ -31,7 +31,6 @@ export default function Carousel({
     skipSnaps: false,
     slidesToScroll: 1,
     loop: true,
-    duration: 1000,
     ...(options ?? {}),
   })
 
@@ -88,9 +87,10 @@ export default function Carousel({
         ref={emblaRef}
         aria-roledescription="carousel"
         onWheel={onWheel}
+        data-embla="viewport" 
       >
         {/* track: 左右paddingは0にしてスナップ中心の見た目ズレを防ぐ */}
-        <div className="flex will-change-transform w-full px-0 py-0">
+        <div className="flex will-change-transform w-full px-0 py-0" data-embla="container">
           {slides.map((child, i) => (
             <div
               key={i}

@@ -5,11 +5,13 @@
     "build": "pnpm run build:css && pnpm run build:client",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "build:css": "tailwindcss -i public/styles.css -o public/output.css -m",
-    "build:client": "tsup \"src/client/*.ts\" --format=esm --target=es2022 --out-dir=public/js --splitting --minify --sourcemap --clean --tsconfig tsconfig.client.json",
+
+    "build:client": "tsup --tsconfig tsconfig.client.json",
+    "dev:client": "tsup --tsconfig tsconfig.client.json --watch",
+
     "deploy": "pnpm run build && wrangler deploy",
     "dev": "run-p dev:css dev:client dev:worker",
     "dev:css": "tailwindcss -i public/styles.css -o public/output.css --watch",
-    "dev:client": "tsup \"src/client/*.ts\" --format=esm --target=es2022 --out-dir=public/js --splitting --sourcemap --watch --tsconfig tsconfig.client.json",
     "dev:worker": "wrangler dev",
     "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
     "test": "jest"

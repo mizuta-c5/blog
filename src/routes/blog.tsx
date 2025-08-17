@@ -118,7 +118,7 @@ blog.post('/blog/:slug/delete', requireAuth, async (c) => {
 blog.get('/new', (c) => {
   return c.html(
     ReactDOMServer.renderToString(
-      <Layout title="New Post" wide={true}>
+      <Layout title="New Post">
         <h1 className="text-2xl font-bold mb-4">New Post</h1>
         <form method="post" action="/new" className="flex flex-col gap-4">
           <input
@@ -182,7 +182,7 @@ blog.get('/blog/edit/:slug', requireAuth, async (c) => {
   const r = row as unknown as Post
   return c.html(
     ReactDOMServer.renderToString(
-      <Layout title="Edit Post" wide={true}>
+      <Layout title="Edit Post">
         <h1 className="text-2xl font-bold mb-4">Edit Post</h1>
         <form method="post" action={`/blog/edit/${r.slug}`}>
           <input

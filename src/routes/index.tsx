@@ -15,7 +15,7 @@ const Home = ({ user }: { user: { name: string } | null }) => (
   <Layout title="Welcome to Our Site">
     <Nav user={user} />
 
-    <section className={`${slide.section} w-screen h-[50vh] flex items-center`}>
+    <section className={`${slide.section} w-full h-[50vh] flex items-center`}>
       <Carousel>
         <SunsetCard />
         <TerminalCard />
@@ -55,7 +55,8 @@ const Home = ({ user }: { user: { name: string } | null }) => (
 
     <SkillsModal />
 
-    <script type="module" src="/editor.js" />
+    <script type="module" src="/js/embla-init.js" defer></script>
+    <script type="module" src="/js/editor.js" defer></script>
 
     <script>{`
       (() => {
