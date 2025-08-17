@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { slide } from '../client/slide'
 
-export default function SunsetCard() {
+export default function AISunsetCard() {
   useEffect(() => {
     const video = document.getElementById('hero-video') as HTMLVideoElement | null
     const pane = document.getElementById('pane')
@@ -50,6 +50,11 @@ export default function SunsetCard() {
                 'inset 0 28px 50px rgba(0,0,0,.18), inset 0 -26px 44px rgba(0,0,0,.22), inset 8px 0 24px rgba(0,0,0,.14), inset -8px 0 24px rgba(0,0,0,.14)',
             }}
           />
+
+          {/* Text overlay indicating video generation source */}
+          <div className="absolute bottom-4 left-4 text-white bg-black/50 px-2 py-1 rounded-md">
+            Generated using ChatGPT's Sora
+          </div>
         </div>
       </div>
     </div>

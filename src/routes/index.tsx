@@ -1,12 +1,12 @@
 import { Hono } from 'hono'
 import ReactDOMServer from 'react-dom/server'
 import { slide } from '../client/slide'
+import AISunsetCard from '../components/AISunsetCard'
 import Carousel from '../components/Carousel'
 import Layout from '../components/Layout'
 import Nav from '../components/Nav'
 import SampleCard1 from '../components/SampleCard1'
 import SkillsModal from '../components/SkillsModal'
-import SunsetCard from '../components/SunsetCard'
 import TerminalCard from '../components/TerminalCard'
 import ThreeDModelCard from '../components/ThreeDModelCard'
 import { getUserFromCookie } from '../middleware/auth'
@@ -19,7 +19,7 @@ const Home = ({ user }: { user: { name: string } | null }) => (
     <section className={`${slide.section} w-full h-[30vh] sm:h-[50vh] flex items-center`}>
       <Carousel slideWidth="85%" maxWidthPx={720} minWidthPx={320} gutterPx={12} edgePaddingPx={12}>
         <SampleCard1 />
-        <SunsetCard />
+        <AISunsetCard />
         <TerminalCard />
         <ThreeDModelCard />
         {/* 必要なら他のスライドも同じ枠で追加 */}

@@ -5,10 +5,8 @@
     "build": "pnpm run build:css && pnpm run build:client",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "build:css": "tailwindcss -i public/styles.css -o public/output.css -m",
-
     "build:client": "tsup --tsconfig tsconfig.client.json",
     "dev:client": "tsup --tsconfig tsconfig.client.json --watch",
-
     "deploy": "pnpm run build && wrangler deploy",
     "dev": "run-p dev:css dev:client dev:worker",
     "dev:css": "tailwindcss -i public/styles.css -o public/output.css --watch",
@@ -45,8 +43,8 @@
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250810.0",
-    "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
+    "embla-carousel-wheel-gestures": "^8.1.0",
     "hono": "^4.9.1",
     "markdown-it": "^14.1.0",
     "react": "^19.1.1",
@@ -61,6 +59,7 @@
     "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@typescript-eslint/parser": "^8.39.1",
     "autoprefixer": "^10.4.21",
+    "embla-carousel": "^8.6.0",
     "eslint": "^9.33.0",
     "globals": "^16.3.0",
     "husky": "^9.1.7",

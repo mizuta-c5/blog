@@ -11,13 +11,13 @@ const Nav: React.FC<NavProps> = ({ user }) => {
         <a href="/" className="text-gray-500 hover:text-gray-700">
           Home
         </a>
-        <a href="#" className="text-gray-400 cursor-not-allowed" aria-disabled="true">
-          About
+        <a href="/blog" className="text-gray-500 hover:text-gray-700">
+          Blog
         </a>
-        <a href="#" className="text-gray-400 cursor-not-allowed" aria-disabled="true">
+        <a href="#" className="text-gray-400 cursor-not-allowed">
           Projects
         </a>
-        <a href="#" className="text-gray-400 cursor-not-allowed" aria-disabled="true">
+        <a href="#" className="text-gray-400 cursor-not-allowed">
           Contact
         </a>
         {user ? (

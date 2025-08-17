@@ -22,7 +22,10 @@ blog.get('/blog', async (c) => {
     'SELECT slug, title, created_at FROM posts ORDER BY created_at DESC',
   ).all()
   const list = (results as { slug: string; title: string; created_at: number }[]).map((r) => (
-    <div key={r.slug} className="post p-4 bg-white rounded-lg shadow-md mb-4">
+    <div
+      key={r.slug}
+      className="post p-4 bg-white rounded-lg shadow-md mb-4 flex flex-col items-left w-full"
+    >
       <a
         href={`/blog/${r.slug}`}
         className="text-lg font-semibold text-gray-500 hover:text-gray-700"
@@ -39,7 +42,7 @@ blog.get('/blog', async (c) => {
       <Layout title="Blog">
         <Nav user={user as { name: string } | null} />
         <h1 className="text-2xl font-bold mb-4">Blog</h1>
-        <div className="flex flex-col max-w-2xl items-left">{list}</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 w-full p-5 gap-4">{list}</div>
       </Layout>,
     ),
   )
