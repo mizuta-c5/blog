@@ -41,74 +41,21 @@ export default function Carousel({
     loop: slides.length > 1,
     inViewThreshold: 0.6,
     watchSlides: false,
+    containScroll: 'trimSnaps',
     ...(options ?? {}),
   }
 
   // v8 は第2引数で plugins を受け取れる
   const [emblaRef, api] = useEmblaCarousel(baseOptions)
-  const [selected, setSelected] = useState(0)
+  const [selected] = useState(0)
 
   useEffect(() => {
     if (!api) return
-
-    const update = () => setSelected(api.selectedScrollSnap())
-
-    const handleReInit = () => {
-      const idx = api.selectedScrollSnap()
-      // 再初期化後に同じ場所へ即復帰（アニメ無し）
-      api.scrollTo(idx, false)
-      setSelected(idx)
-    }
-
-    // 初期反映
-    update()
-
-    // "settle" だと折返し後に最終位置が確定してから反映されて安定
-    api.on('settle', update)
-    api.on('reInit', handleReInit)
-
+    const fix = () => api.scrollTo(api.selectedScrollSnap(), false)
+    requestAnimationFrame(fix) // 初回フレーム後に1回だけ
+    api.on('reInit', fix) // 画像/リサイズで再初期化時も
     return () => {
-      api.off?.('settle', update)
-      api.off?.('reInit', handleReInit)
-    }
-  }, [api])
-
-  // 追加: 選択スライドの video だけ再生
-  useEffect(() => {
-    if (!api) return
-
-    const originals = api.slideNodes() // 元スライドだけ
-
-    const playOnlySelected = () => {
-      const idx = api.selectedScrollSnap()
-      // 全videoを停止
-      originals.forEach((el) => {
-        const v = el.querySelector('video')
-        if (v) v.pause()
-      })
-      // 選択スライドのvideoだけ再生
-      const current = originals[idx]?.querySelector('video')
-      if (current) {
-        current.muted = true
-        current.playsInline = true
-        // 自動再生エラーは握りつぶす
-        const p = current.play?.()
-        if (typeof p?.catch === 'function')
-          p.catch(() => {
-            console.log('error')
-          })
-      }
-      setSelected(idx)
-    }
-
-    // 初期 & 再初期化 & スナップ確定で実行
-    playOnlySelected()
-    api.on('settle', playOnlySelected)
-    api.on('reInit', playOnlySelected)
-
-    return () => {
-      api.off?.('settle', playOnlySelected)
-      api.off?.('reInit', playOnlySelected)
+      api.off?.('reInit', fix)
     }
   }, [api])
 
@@ -122,8 +69,8 @@ export default function Carousel({
 
     const updateResponsive = () => {
       const isMobile = window.innerWidth <= 1024
-      setMobileGutter(isMobile ? gutter / 2 : gutter)
-      setMobileEdge(isMobile ? Math.max(0, Math.round(edge / 2)) : edge)
+      setMobileGutter(isMobile ? gutter / 1.5 : gutter)
+      setMobileEdge(isMobile ? Math.max(0, Math.round(edge / 1.5)) : edge)
     }
 
     updateResponsive()
