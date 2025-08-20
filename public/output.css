@@ -592,6 +592,10 @@ video {
   pointer-events: none;
 }
 
+.static {
+  position: static;
+}
+
 .fixed {
   position: fixed;
 }
@@ -1014,11 +1018,6 @@ video {
 .bg-zinc-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(24 24 27 / var(--tw-bg-opacity));
-}
-
-.bg-red-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
 .bg-\[conic-gradient\(at_30\%_120\%\2c theme\(colors\.zinc\.400\)\2c theme\(colors\.zinc\.700\)\2c theme\(colors\.zinc\.400\)\)\] {

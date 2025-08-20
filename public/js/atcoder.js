@@ -14500,13 +14500,24 @@ async function getWeeklyData(user) {
     if (c && Date.now() - c.savedAt < ONE_WEEK) return c.data;
   } catch {
   }
-  const data = await (await fetch(`/atcoder/${encodeURIComponent(user)}`)).json();
+  const url = `/data/atcoder-${encodeURIComponent(user)}.json`;
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) {
+    console.error("static json missing:", res.status, url);
+    return [];
+  }
+  const data = await res.json();
   try {
     localStorage.setItem(KEY, JSON.stringify({ savedAt: Date.now(), data }));
   } catch {
   }
   return data;
 }
+function clearCache(user) {
+  const KEY = `atcoder_cache_${user}`;
+  localStorage.removeItem(KEY);
+}
+clearCache("richard_5_");
 async function boot(node) {
   const user = node.dataset.user || "richard_5_";
   const target = node.dataset.target || "atcoder-chart";
@@ -14521,7 +14532,10 @@ async function boot(node) {
       responsive: true,
       maintainAspectRatio: false,
       // 親要素の高さにフィット
-      plugins: { legend: { display: false }, title: { display: true, text: `AtCoder Rating (Weekly) \u2014 ${user}` } },
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: `AtCoder Rating (Weekly) \u2014 ${user}` }
+      },
       scales: { x: { ticks: { maxTicksLimit: 8 } }, y: { beginAtZero: false } }
     }
   });
