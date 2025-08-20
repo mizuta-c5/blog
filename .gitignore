@@ -1,6 +1,9 @@
 # prod
 dist/
 
+# assets
+public/sunset_beach.mp4
+
 # dev
 .yarn/
 !.yarn/releases
@@ -31,3 +34,7 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+
+# wasm
+rust-cmd/target/
+

@@ -1,4 +1,4 @@
-import "./chunk-PZ5AY32C.js";
+import "./chunk-G3PMV62Z.js";
 
 // node_modules/.pnpm/embla-carousel@8.6.0/node_modules/embla-carousel/esm/embla-carousel.esm.js
 function isNumber(subject) {

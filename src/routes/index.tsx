@@ -9,7 +9,7 @@ import SampleCard1 from '../components/AtCoderCard'
 import SampleCard2 from '../components/SampleCard2'
 import SampleCard3 from '../components/SampleCard3'
 import SkillsModal from '../components/SkillsModal'
-import TerminalCard from '../components/TerminalCard'
+import TerminalCard from '../components/TerminalEmuCard'
 // import ThreeDModelCard from '../components/ThreeDModelCard'
 import { getUserFromCookie } from '../middleware/auth'
 import type { Bindings, Variables } from '../types/misc'
@@ -63,6 +63,7 @@ const Home = ({ user }: { user: { name: string } | null }) => (
 
     <script type="module" src="/js/embla-init.js" defer></script>
     <script type="module" src="/js/editor.js" defer></script>
+    <script type="module" src="/js/terminal-emu.js" defer></script>
   </Layout>
 )
 
