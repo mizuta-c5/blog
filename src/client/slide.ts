@@ -6,6 +6,7 @@ interface Slide {
   termOut: string
   termInRow: string
   termIn: string
+  terminalEmuCard: string
   ring: string
 }
 
@@ -21,5 +22,6 @@ export const slide: Slide = {
     'min-h-0 grow whitespace-pre-wrap font-mono text-[13px] leading-6 text-zinc-800 overflow-y-auto',
   termInRow: 'border-t border-zinc-200/70 px-3 sm:px-4 py-2 sm:py-3',
   termIn: 'flex-1 outline-none placeholder:text-zinc-400 text-emerald-500',
+  terminalEmuCard: 'relative group w-full h-full flex justify-center items-center w-[]',
   ring: 'ring-1 ring-inset ring-black/10 dark:ring-white/10',
 }

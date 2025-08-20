@@ -5,7 +5,7 @@ export default function AtCoderCard() {
   const ATCODER_CHART_ID = 'atcoder-chart-richard_5_'
 
   return (
-      <div className="relative group">
+    <div className={slide.terminalEmuCard}>
       <div className={slide.ring} />
       <div className={slide.card}>
         <div id="pane" className={`${slide.pane} aspect-[16/9] isolate`}>

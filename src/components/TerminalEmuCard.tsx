@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { slide } from '../client/slide'
 
 type Theme = 'matrix' | 'classic' | 'light'
@@ -42,9 +42,12 @@ export default function TerminalEmuCard() {
 
   const themeClasses = useMemo(() => {
     switch (theme) {
-      case "light":   return "bg-white text-zinc-900 border border-zinc-200"
-      case "classic": return "bg-zinc-900 text-zinc-100"
-      default:        return "bg-black text-green-500"
+      case 'light':
+        return 'bg-white text-zinc-900 border border-zinc-200'
+      case 'classic':
+        return 'bg-zinc-900 text-zinc-100'
+      default:
+        return 'bg-black text-green-500'
     }
   }, [theme])
 
@@ -52,16 +55,16 @@ export default function TerminalEmuCard() {
   useEffect(() => {
     let mounted = true
     ;(async () => {
-      if (typeof window === "undefined") return
+      if (typeof window === 'undefined') return
       const url = new URL('/wasm_term/cmd_engine.js', window.location.href).toString()
       const mod = (await import(/* @vite-ignore */ url)) as unknown as CmdEngineModule
       await mod.default()
-      if (!mounted) return 
+      if (!mounted) return
       engineRef.current = mod
 
       // コマンド一覧(Tab補完用)
       const list = mod.commands()
-      setCmdList(Array.isArray(list) ? list as string[] : [])
+      setCmdList(Array.isArray(list) ? (list as string[]) : [])
     })()
     return () => {
       mounted = false
@@ -74,11 +77,11 @@ export default function TerminalEmuCard() {
     if (!trimmed) return
 
     // 入力行をエコー
-    setLines((prev) => [...prev, { kind: "in", text: `${prompt} ${trimmed}`}])
+    setLines((prev) => [...prev, { kind: 'in', text: `${prompt} ${trimmed}` }])
 
     const engine = engineRef.current
     if (!engine) {
-      setLines((prev) => [...prev, { kind: "out", text: "engine: not ready"}])
+      setLines((prev) => [...prev, { kind: 'out', text: 'engine: not ready' }])
       return
     }
 
@@ -88,29 +91,28 @@ export default function TerminalEmuCard() {
 
       for (const a of arr) {
         switch (a.kind) {
-          case "print":
-            setLines((prev) => [...prev, { kind: "out", text: a.text}])
+          case 'print':
+            setLines((prev) => [...prev, { kind: 'out', text: a.text }])
             break
-          case "clear":
+          case 'clear':
             setLines([])
             break
-          case "open":
+          case 'open':
             try {
-              window.open(a.url, "_blank", "noopener, noreferrer") 
+              window.open(a.url, '_blank', 'noopener, noreferrer')
             } catch {
-              setLines((prev) => [...prev, { kind: "out", text: "open failed" }])
+              setLines((prev) => [...prev, { kind: 'out', text: 'open failed' }])
             }
             break
-          case "theme":
-            if (["matrix", "classic", "light"].includes(a.value)) {
+          case 'theme':
+            if (['matrix', 'classic', 'light'].includes(a.value)) {
               setTheme(a.value)
             }
             break
         }
-
       }
     } catch (e) {
-      setLines((prev) => [...prev, { kind: "out", text: String(e)}])
+      setLines((prev) => [...prev, { kind: 'out', text: String(e) }])
     }
   }
 
@@ -129,16 +131,16 @@ export default function TerminalEmuCard() {
 
   // ===== キーハンドラ(履歴 & Tab補完) =====
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault()
       const val = input
-      setInput("")
+      setInput('')
       setHistory((h) => (val ? [...h, val].slice(-100) : h))
       setHistIndex(null)
-      run(val).catch((e) => setLines((prev) => [...prev, { kind: "out", text: String(e)}]))
+      run(val).catch((e) => setLines((prev) => [...prev, { kind: 'out', text: String(e) }]))
       return
-    } 
-    if (e.key === "ArrowUp") {
+    }
+    if (e.key === 'ArrowUp') {
       e.preventDefault()
       setHistIndex((idx) => {
         const next = idx === null ? history.length - 1 : Math.max(0, idx - 1)
@@ -147,55 +149,63 @@ export default function TerminalEmuCard() {
       })
       return
     }
-    if (e.key === "ArrowDown") {
+    if (e.key === 'ArrowDown') {
       e.preventDefault()
       setHistIndex((idx) => {
         if (idx === null) return null
         const next = idx + 1
         if (next >= history.length) {
-          setInput("");
+          setInput('')
           return null
         }
-        setInput(history[next] ?? "")
+        setInput(history[next] ?? '')
         return next
       })
       return
     }
 
-    if (e.key === "Tab") {
+    if (e.key === 'Tab') {
       e.preventDefault()
-      const first = (input.trim().split(/\s+/)[0] ?? "").toLowerCase()
+      const first = (input.trim().split(/\s+/)[0] ?? '').toLowerCase()
       if (!first) return
       const matches = cmdlist.filter((c) => c.startsWith(first))
       if (matches.length === 1) {
-        setInput(matches[0] + (input.endsWith(" ") ? "" : " "))
+        setInput(matches[0] + (input.endsWith(' ') ? '' : ' '))
       } else if (matches.length > 1) {
-        setLines((prev) => [...prev, { kind: "out", text: matches.join(" ")}])
+        setLines((prev) => [...prev, { kind: 'out', text: matches.join(' ') }])
       }
     }
   }
 
   // ===== レンダリング =====
   return (
-    <div className="relative group" onClick={() => inRef.current?.focus()}>
+    <div className={slide.terminalEmuCard} onClick={() => inRef.current?.focus()}>
       <div className={slide.card}>
-        <div className={`${slide.pane} flex flex-col ${themeClasses}`} style={{ aspectRatio: "16/9" }}>
-         {/* ← ここにクライアントでターミナルを後乗せする */}
-         <div className="js-terminal-emu" />
+        <div
+          className={`${slide.pane} flex flex-col ${themeClasses}`}
+          style={{ aspectRatio: '16/9' }}
+        >
+          {/* ← ここにクライアントでターミナルを後乗せする */}
+          <div className="js-terminal-emu" />
           {/* Title bar */}
           <div className={`${slide.termBar} select-none`}>
             <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
             <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
             <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
             <span className="ml-auto text-[11px] md:text-xs text-zinc-500">
-              {prompt.replace(":$", "")}
+              {prompt.replace(':$', '')}
             </span>
           </div>
 
           {/* Output */}
           <div ref={outRef} className={`${slide.termOut} font-mono text-[13px] leading-6`}>
             {lines.map((ln, i) => (
-              <pre key={i} className={`${ln.kind === "in" ? "opacity-90" : "opacity-100"} whitespace-pre-wrap`}>{ln.text}</pre>
+              <pre
+                key={i}
+                className={`${ln.kind === 'in' ? 'opacity-90' : 'opacity-100'} whitespace-pre-wrap`}
+              >
+                {ln.text}
+              </pre>
             ))}
           </div>
 

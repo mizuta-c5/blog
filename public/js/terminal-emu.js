@@ -19581,6 +19581,7 @@ var slide = {
   termOut: "min-h-0 grow whitespace-pre-wrap font-mono text-[13px] leading-6 text-zinc-800 overflow-y-auto",
   termInRow: "border-t border-zinc-200/70 px-3 sm:px-4 py-2 sm:py-3",
   termIn: "flex-1 outline-none placeholder:text-zinc-400 text-emerald-500",
+  terminalEmuCard: "relative group w-full h-full flex justify-center items-center w-[]",
   ring: "ring-1 ring-inset ring-black/10 dark:ring-white/10"
 };
 
@@ -19723,33 +19724,47 @@ function TerminalEmuCard() {
       }
     }
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "relative group", onClick: () => inRef.current?.focus(), children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: slide.card, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `${slide.pane} flex flex-col ${themeClasses}`, style: { aspectRatio: "16/9" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "js-terminal-emu" }),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `${slide.termBar} select-none`, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2.5 w-2.5 rounded-full bg-red-400/80" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2.5 w-2.5 rounded-full bg-amber-400/80" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2.5 w-2.5 rounded-full bg-emerald-400/80" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "ml-auto text-[11px] md:text-xs text-zinc-500", children: prompt.replace(":$", "") })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: outRef, className: `${slide.termOut} font-mono text-[13px] leading-6`, children: lines.map((ln, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", { className: `${ln.kind === "in" ? "opacity-90" : "opacity-100"} whitespace-pre-wrap`, children: ln.text }, i)) }),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `${slide.termInRow} font-mono text-[13px] leading-6`, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center gap-2", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-emerald-500 select-none", children: "$" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        "input",
-        {
-          ref: inRef,
-          type: "text",
-          value: input,
-          onChange: (e) => setInput(e.target.value),
-          onKeyDown,
-          autoComplete: "off",
-          className: `${slide.termIn} bg-transparent outline-none w-full placeholder:text-zinc-500/70`,
-          placeholder: "type 'help' and hit Enter",
-          spellCheck: false
-        }
-      )
-    ] }) })
-  ] }) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: slide.terminalEmuCard, onClick: () => inRef.current?.focus(), children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: slide.card, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+    "div",
+    {
+      className: `${slide.pane} flex flex-col ${themeClasses}`,
+      style: { aspectRatio: "16/9" },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "js-terminal-emu" }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `${slide.termBar} select-none`, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2.5 w-2.5 rounded-full bg-red-400/80" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2.5 w-2.5 rounded-full bg-amber-400/80" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2.5 w-2.5 rounded-full bg-emerald-400/80" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "ml-auto text-[11px] md:text-xs text-zinc-500", children: prompt.replace(":$", "") })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: outRef, className: `${slide.termOut} font-mono text-[13px] leading-6`, children: lines.map((ln, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+          "pre",
+          {
+            className: `${ln.kind === "in" ? "opacity-90" : "opacity-100"} whitespace-pre-wrap`,
+            children: ln.text
+          },
+          i
+        )) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `${slide.termInRow} font-mono text-[13px] leading-6`, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-emerald-500 select-none", children: "$" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            "input",
+            {
+              ref: inRef,
+              type: "text",
+              value: input,
+              onChange: (e) => setInput(e.target.value),
+              onKeyDown,
+              autoComplete: "off",
+              className: `${slide.termIn} bg-transparent outline-none w-full placeholder:text-zinc-500/70`,
+              placeholder: "type 'help' and hit Enter",
+              spellCheck: false
+            }
+          )
+        ] }) })
+      ]
+    }
+  ) }) });
 }
 
 // src/client/terminal-emu.tsx

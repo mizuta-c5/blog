@@ -2,14 +2,14 @@ import { Hono } from 'hono'
 import ReactDOMServer from 'react-dom/server'
 import { slide } from '../client/slide'
 import AISunsetCard from '../components/AISunsetCard'
+import SampleCard1 from '../components/AtCoderCard'
 import Carousel from '../components/Carousel'
 import Layout from '../components/Layout'
 import Nav from '../components/Nav'
-import SampleCard1 from '../components/AtCoderCard'
 import SampleCard2 from '../components/SampleCard2'
 import SampleCard3 from '../components/SampleCard3'
 import SkillsModal from '../components/SkillsModal'
-import TerminalCard from '../components/TerminalEmuCard'
+import TerminalEmuCard from '../components/TerminalEmuCard'
 // import ThreeDModelCard from '../components/ThreeDModelCard'
 import { getUserFromCookie } from '../middleware/auth'
 import type { Bindings, Variables } from '../types/misc'
@@ -19,9 +19,9 @@ const Home = ({ user }: { user: { name: string } | null }) => (
     <Nav user={user} />
 
     <section className={`${slide.section} w-full h-[30vh] sm:h-[50vh] flex items-center`}>
-      <Carousel slideWidth="85%" maxWidthPx={720} minWidthPx={320} gutterPx={12} edgePaddingPx={12}>
+        <Carousel slideWidth="100%" maxWidthPx={720} minWidthPx={320} gutterPx={12} edgePaddingPx={12}>
         <AISunsetCard />
-        <TerminalCard />
+        <TerminalEmuCard />
         <SampleCard1 />
         <SampleCard2 />
         <SampleCard3 />

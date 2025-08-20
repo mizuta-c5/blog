@@ -3,7 +3,7 @@ import { slide } from '../client/slide'
 
 export default function ThreeDModelCard() {
   return (
-    <div className="relative group">
+    <div className={slide.terminalEmuCard}>
       <div className={slide.ring} />
       <div className={slide.card}>
         <div id="pane" className={slide.pane} style={{ aspectRatio: '16/9' }}>

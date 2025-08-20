@@ -13,7 +13,7 @@ export default function SampleCard1() {
   }, [])
 
   return (
-    <div className="relative group">
+    <div className={slide.terminalEmuCard}>
       <div className={slide.ring} />
       <div className={slide.card}>
         {/* ★ isolate でブレンドのにじみ防止。角丸は 16px に統一 */}

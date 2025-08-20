@@ -99,7 +99,7 @@ export default function Carousel({
           {slides.map((child, i) => (
             <div
               key={i}
-              className="shrink-0 transition-all motion-safe:duration-300 ease-out scale-100 opacity-100 z-10"
+              className="shrink-0 transition-all motion-safe:duration-300 ease-out opacity-100 z-10 bg-red-500 h-[30vh] sm:h-[50vh] flex items-center justify-center"
               style={{
                 flex: `0 0 ${basis}`,
                 paddingLeft: mobileGutter,
